@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Planet_Water_Mat
+  m_Name: Planet_Water_Mat 1
   m_Shader: {fileID: -6465566751694194690, guid: 26449c4fd8e2dc34ab40672b73ba24e8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -29,7 +29,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Map:
-        m_Texture: {fileID: 2800000, guid: 93aa7dbd603c86e49bfdbaa5f1120fe1, type: 3}
+        m_Texture: {fileID: 2800000, guid: f3d639405e9e2f244b03c3e5cc416413, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -57,7 +57,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emission_Map:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: f3d639405e9e2f244b03c3e5cc416413, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Height:
@@ -89,7 +89,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal_Map:
-        m_Texture: {fileID: 2800000, guid: c403082091243ee41a3e70ad36f84c3d, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -105,7 +105,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Roughness_Map:
-        m_Texture: {fileID: 2800000, guid: ee76ede838c95d4439b00f518fbc7431, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -140,7 +140,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _Emission_Strength: 0
+    - _Emission_Strength: 10
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -155,14 +155,14 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Roughness: 0
-    - _Roughness_Value: 1.24
+    - _Roughness_Value: 5
     - _Scale: 0
     - _Smoothness: 0.744
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _Strength: 2.13
+    - _Strength: 0
     - _Surface: 0
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
@@ -170,7 +170,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Base_Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
+    - _Color: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Emission_Strength: {r: 0, g: 0, b: 0, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
