@@ -1,40 +1,81 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    // Drag your Circle Prefab here in the Inspector
-    public GameObject circlePrefab;
+    [Header("UI Elements")]
+    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI failText;
+    public GameObject winScreen;
+    public GameObject lossScreen;
 
-    // Set this to your circle's size in the Inspector (e.g., 1.0)
+    [Header("Game Setup")]
+    public GameObject circlePrefab;
     public float circleRadius = 1.0f;
 
-    // NEW: This is the total number of circles in the game.
-    public int totalCirclesToSpawn = 20;
+  
+    [Header("Game Physics")]
+    public LayerMask circlesLayerMask;
 
-    // This will track which circle we're on (1, 2, ... 20)
+    [Header("Game Rules")]
+    public float timeLimit = 30f;
+    public int totalCirclesToSpawn = 20;
+    public int winScoreRequirement = 17;
+    public int maxFails = 3;
+
     private int currentTargetNumber;
+    private int circlesClicked;
+    private int currentFails;
+    private float currentTime;
+    private bool gameIsActive = false;
 
     void Start()
     {
-        StartGame(); // Start the game when the scene loads
+        if (circlesLayerMask == 0) 
+        {
+            circlesLayerMask = LayerMask.GetMask("Circles");
+        }
+
+        StartGame();
     }
 
-    // This function sets up the game from the beginning
+    void Update()
+    {
+        if (!gameIsActive) return;
+
+        currentTime -= Time.deltaTime;
+
+        if (currentTime <= 0)
+        {
+            currentTime = 0;
+            EndGame(false);
+        }
+
+        UpdateUI();
+    }
+
     void StartGame()
     {
-        // Reset the counter to 1
+        gameIsActive = true;
         currentTargetNumber = 1;
+        circlesClicked = 0;
+        currentFails = 0;
+        currentTime = timeLimit;
 
-        // Spawn the VERY FIRST circle (Circle #1)
+        winScreen.SetActive(false);
+        lossScreen.SetActive(false);
+        UpdateUI();
+
         SpawnNextCircle();
     }
 
-    // This is our new function that spawns ONE circle
     void SpawnNextCircle()
     {
-        // --- This is the anti-overlap logic ---
+        if (!gameIsActive) return;
+
         int maxSpawnAttempts = 20;
         int currentSpawnAttempts = 0;
         Vector2 spawnPos = Vector2.zero;
@@ -42,7 +83,6 @@ public class GameManager : MonoBehaviour
 
         do
         {
-            // Find a random position
             float randomX = Random.Range(-7f, 7f);
             float randomY = Random.Range(-4f, 4f);
             spawnPos = new Vector2(randomX, randomY);
@@ -54,63 +94,83 @@ public class GameManager : MonoBehaviour
                 break;
             }
 
-            // Check if the spot is clear of other colliders (like a previous circle)
-            spotIsClear = (Physics2D.OverlapCircle(spawnPos, circleRadius) == null);
+            spotIsClear = (Physics2D.OverlapCircle(spawnPos, circleRadius, circlesLayerMask) == null);
 
         } while (!spotIsClear);
-        // --- End of anti-overlap logic ---
 
-        // Only spawn if we found a clear spot
         if (spotIsClear)
         {
-            // Create the new circle
             GameObject circleGO = Instantiate(circlePrefab, spawnPos, Quaternion.identity);
-
-            // Tell the circle what number it is (e.g., 1, or 2, or 3...)
             circleGO.GetComponent<ClickableCircle>().Initialize(this, currentTargetNumber);
         }
     }
 
-    // This function is called by the ClickableCircle script
     public void CircleClicked(int numberClicked)
     {
-        // We only check if the clicked number is the one we're waiting for
+        if (!gameIsActive) return;
+
         if (numberClicked == currentTargetNumber)
         {
-            // SUCCESS! They clicked the right one.
-            Debug.Log("Correct! Clicked: " + numberClicked);
-
-            // Move to the next number
+            circlesClicked++;
             currentTargetNumber++;
 
-            // CHECK FOR WIN CONDITION
-            if (currentTargetNumber > totalCirclesToSpawn)
+            UpdateUI();
+
+            if (circlesClicked >= totalCirclesToSpawn)
             {
-                Debug.Log("YOU WIN! All 20 circles clicked.");
-                // Restart the game from the beginning
-                StartGame();
+                EndGame(true);
             }
             else
             {
-                // If the game is not won, spawn the next circle
                 SpawnNextCircle();
             }
         }
-        else
+    }
+
+    public void HandleMiss()
+    {
+        if (!gameIsActive) return;
+
+        currentFails++;
+        UpdateUI();
+
+        if (currentFails >= maxFails)
         {
-            // FAILURE! They clicked the wrong one (this shouldn't happen in this mode,
-            // but it's good to have)
-            Debug.Log("Wrong! Clicked " + numberClicked + ", expected " + currentTargetNumber);
-
-            // Find the circle they were *supposed* to click and destroy it
-            ClickableCircle targetCircle = FindObjectOfType<ClickableCircle>();
-            if (targetCircle != null)
-            {
-                Destroy(targetCircle.gameObject);
-            }
-
-            // Restart the game
-            StartGame();
+            EndGame(false);
         }
     }
+
+    void EndGame(bool clickedAllCircles)
+    {
+        gameIsActive = false;
+
+        ClickableCircle circle = FindObjectOfType<ClickableCircle>();
+        if (circle != null)
+        {
+            Destroy(circle.gameObject);
+        }
+
+        if (clickedAllCircles)
+        {
+            winScreen.SetActive(true);
+        }
+        else if (circlesClicked >= winScoreRequirement && !clickedAllCircles)
+        {
+            winScreen.SetActive(true);
+        }
+        else
+        {
+            lossScreen.SetActive(true);
+        }
+    }
+
+    void UpdateUI()
+    {
+        timerText.text = "Time: " + currentTime.ToString("F1");
+        scoreText.text = "Score: " + circlesClicked + " / " + totalCirclesToSpawn;
+        failText.text = "Fails: " + currentFails + " / " + maxFails;
+    }
 }
+
+//Lógicas em falta: Butão de voltar para o jogo após perder o minijogo e Butão de receber o buff depois de ganhar o minijogo
+//Falta o UI ( Imagens e sprites), a Fonte do texto está implementada
