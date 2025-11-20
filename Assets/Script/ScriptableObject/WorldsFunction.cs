@@ -13,14 +13,13 @@ public class WorldsFunction : MonoBehaviour
     private float timer1min = 0f;
 
     public float defesaAcumulada = 0;
-    private float defesaGain = 0;
+    public float defesaGain = 0;
 
     public float curaAcumulada = 0f;
-    private float curaGain = 0f;
+    public float curaGain = 0f;
 
     public float worldHabitantes;
 
-    public bool statsWorld = false;
     public bool statsCura = false;
     public bool statsDefesa = false;
 
@@ -38,6 +37,24 @@ public class WorldsFunction : MonoBehaviour
 
     void Update()
     {
+        if (worldHabitantes == 0)
+        {
+            WinVirus();
+        }
+
+        if (defesaAcumulada < 0)
+        {
+            statsDefesa = false;
+            defenseText.text = "0";
+        }
+
+        if (curaAcumulada < 0)
+        {
+            statsCura = false;
+            curaText.text = "0";
+
+        }
+
         timer5sec += Time.deltaTime;
         timer10sec += Time.deltaTime;
         timer1min += Time.deltaTime;
@@ -76,5 +93,10 @@ public class WorldsFunction : MonoBehaviour
             }
             timer1min = 0f;
         }
+    }
+
+    public void WinVirus()
+    {
+
     }
 }

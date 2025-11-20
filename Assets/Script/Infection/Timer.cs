@@ -15,6 +15,9 @@ public class Timer : MonoBehaviour
     private bool isBlinking = false;
     public float blinkSpeed = 0.5f;
 
+    private bool isCuraActive = false;
+    private bool isDefesaActive = false;
+
     void Start()
     {
         timerText.color = defaultColor;
@@ -30,14 +33,19 @@ public class Timer : MonoBehaviour
 
             if (timeRemaining <= 240f && timeRemaining > 30f)
             {
-                
-                statsWorld.statsDefesa = true;
+                if (isDefesaActive == false)
+                {
+                    ActiveDefesa();
+                }
                 timerText.color = colorAfter1Min;
             }
 
             if (timeRemaining <= 180f)
             {
-                statsWorld.statsCura = true;
+                if (isCuraActive == false)
+                {
+                    ActiveCura();
+                }
             }
 
             if (timeRemaining <= 30f && timeRemaining > 10f)
@@ -71,5 +79,16 @@ public class Timer : MonoBehaviour
         }
 
         timerText.enabled = true;
+    }
+
+    void ActiveDefesa()
+    {
+        isDefesaActive = true;
+        statsWorld.statsDefesa = true;
+    }
+    void ActiveCura()
+    {
+        isCuraActive = true;
+        statsWorld.statsCura = true;
     }
 }

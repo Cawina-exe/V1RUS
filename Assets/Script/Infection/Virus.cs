@@ -3,17 +3,20 @@ using UnityEngine;
 
 public class Virus : MonoBehaviour
 {
-    private float virusPower = 0;
-    private float virusGain = 1;
+    public float virusMoney = 0;
+    public float virusPower = 0;
+    public float virusGain = 1;
     private float timer1sec = 0f;
     private bool stateVirus = false;
 
     [SerializeField] private TMP_Text HabitantesText;
     [SerializeField] private TMP_Text VirusPowerText;
+    [SerializeField] private TMP_Text VirusMoneyText;
     [SerializeField] private WorldsFunction statsWorld;
 
     void Start()
     {
+        VirusMoneyText.text = virusMoney.ToString();
         VirusPowerText.text = virusPower.ToString();
         HabitantesText.text = statsWorld.worldHabitantes.ToString();
     }
@@ -31,6 +34,8 @@ public class Virus : MonoBehaviour
         if (timer1sec >= 1f)
         {
             virusPower += virusGain;
+            virusMoney += virusGain * 0.5f;
+            VirusMoneyText.text = virusMoney.ToString() + "$";
             attack();
             timer1sec = 0f;
         }
@@ -60,6 +65,12 @@ public class Virus : MonoBehaviour
     void Derrota()
     {
 
+    }
+
+    public void PerderDinheiro(float money)
+    {
+        virusMoney -= money;
+        VirusMoneyText.text = virusMoney.ToString() + "$";
     }
 }
 
