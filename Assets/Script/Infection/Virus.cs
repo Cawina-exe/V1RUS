@@ -72,5 +72,11 @@ public class Virus : MonoBehaviour
         virusMoney -= money;
         VirusMoneyText.text = virusMoney.ToString() + "$";
     }
+
+    public void change()
+    {
+        VirusPowerText.text = virusPower.ToString();
+        VirusMoneyText.text = virusMoney.ToString() + "$";
+    }
 }
 

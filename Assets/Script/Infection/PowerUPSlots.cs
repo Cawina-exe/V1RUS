@@ -82,7 +82,8 @@ public class PowerUPSlots : MonoBehaviour
                 AplicarPlaneta(false);
                 break;
         }
-
+        world.change();
+        virus.change();
         manager.EscolhaFeita();
     }
 

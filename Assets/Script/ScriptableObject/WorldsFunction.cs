@@ -58,7 +58,7 @@ public class WorldsFunction : MonoBehaviour
         timer5sec += Time.deltaTime;
         timer10sec += Time.deltaTime;
         timer1min += Time.deltaTime;
-        
+
         if (timer5sec >= 5f)
         {
             if (statsCura)
@@ -99,4 +99,11 @@ public class WorldsFunction : MonoBehaviour
     {
 
     }
+
+    public void change()
+    {
+        curaText.text = curaAcumulada.ToString();
+        defenseText.text = defesaAcumulada.ToString();
+    }
+
 }

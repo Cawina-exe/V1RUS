@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f1e8c5538352004fbf5acfb3b901f52, type: 3}
   m_Name: Op1
   m_EditorClassIdentifier: Assembly-CSharp::OptionsData
-  Titulo: 
+  Titulo: A
   valorParaOVirus: 1
   virusAction: 0
   descricaoVirus: A

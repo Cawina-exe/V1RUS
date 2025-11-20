@@ -150,6 +150,8 @@ public class ButtonBuy : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     }
                     break;
             }
+            statsWorld.change();
+            statsVirus.change();
         }
     }
 }
