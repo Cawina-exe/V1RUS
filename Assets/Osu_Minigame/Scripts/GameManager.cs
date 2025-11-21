@@ -12,12 +12,15 @@ public class GameManager : MonoBehaviour
     public GameObject winScreen;
     public GameObject lossScreen;
 
+    
+    [Header("Audio Settings")]
+    public AudioSource musicSource; 
+    public AudioSource sfxSource;  
+    public AudioClip clickSound;   
+
     [Header("Game Setup")]
     public GameObject circlePrefab;
     public float circleRadius = 1.0f;
-
-  
-    [Header("Game Physics")]
     public LayerMask circlesLayerMask;
 
     [Header("Game Rules")]
@@ -34,11 +37,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        if (circlesLayerMask == 0) 
+        if (circlesLayerMask == 0)
         {
             circlesLayerMask = LayerMask.GetMask("Circles");
         }
-
         StartGame();
     }
 
@@ -69,7 +71,23 @@ public class GameManager : MonoBehaviour
         lossScreen.SetActive(false);
         UpdateUI();
 
+      
+        if (musicSource != null)
+        {
+            musicSource.Play();
+        }
+
         SpawnNextCircle();
+    }
+
+   
+    public void PlayClickSound()
+    {
+        if (sfxSource != null && clickSound != null)
+        {
+         
+            sfxSource.PlayOneShot(clickSound);
+        }
     }
 
     void SpawnNextCircle()
@@ -111,6 +129,9 @@ public class GameManager : MonoBehaviour
 
         if (numberClicked == currentTargetNumber)
         {
+            
+            PlayClickSound();
+
             circlesClicked++;
             currentTargetNumber++;
 
@@ -144,6 +165,12 @@ public class GameManager : MonoBehaviour
     {
         gameIsActive = false;
 
+   
+        if (musicSource != null)
+        {
+            musicSource.Stop();
+        }
+
         ClickableCircle circle = FindObjectOfType<ClickableCircle>();
         if (circle != null)
         {
@@ -171,6 +198,5 @@ public class GameManager : MonoBehaviour
         failText.text = "Fails: " + currentFails + " / " + maxFails;
     }
 }
-
 //Lógicas em falta: Butão de voltar para o jogo após perder o minijogo e Butão de receber o buff depois de ganhar o minijogo
 //Falta o UI ( Imagens e sprites), a Fonte do texto está implementada
