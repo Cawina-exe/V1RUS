@@ -5,6 +5,7 @@ public class Virus : MonoBehaviour
 {
     public float virusMoney = 0;
     public float virusPower = 0;
+    public float virusPontos = 0;
     public float virusGain = 1;
     private float timer1sec = 0f;
     private bool stateVirus = false;
@@ -12,6 +13,7 @@ public class Virus : MonoBehaviour
     [SerializeField] private TMP_Text HabitantesText;
     [SerializeField] private TMP_Text VirusPowerText;
     [SerializeField] private TMP_Text VirusMoneyText;
+    [SerializeField] public TMP_Text VirusPontosText;
     [SerializeField] private WorldsFunction statsWorld;
 
     void Start()
@@ -19,6 +21,7 @@ public class Virus : MonoBehaviour
         VirusMoneyText.text = virusMoney.ToString();
         VirusPowerText.text = virusPower.ToString();
         HabitantesText.text = statsWorld.worldHabitantes.ToString();
+        VirusPontosText.text = virusPontos.ToString();
     }
 
     void Update()
@@ -34,7 +37,9 @@ public class Virus : MonoBehaviour
         if (timer1sec >= 1f)
         {
             virusPower += virusGain;
+            virusPontos += Mathf.Ceil(virusGain * 0.25f);
             virusMoney += virusGain * 0.5f;
+            VirusPontosText.text = virusPontos.ToString();
             VirusMoneyText.text = virusMoney.ToString() + "$";
             attack();
             timer1sec = 0f;

@@ -69,6 +69,8 @@ public class ButtonBuy : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         if (statsVirus.virusMoney >= preco)
         {
+            statsVirus.virusPontos += preco/3f;
+            statsVirus.VirusPontosText.text = statsVirus.virusPontos.ToString();
             statsVirus.PerderDinheiro(preco);
             switch (quem)
             {
