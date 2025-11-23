@@ -24,7 +24,8 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 16e3691225f2bd84ebd624e16ceefa8f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _SWIZZLECHANNEL_R
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -62,6 +63,7 @@ Material:
     - _CloudScrollSpeed: 0.03
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _SWIZZLECHANNEL: 0
     m_Colors:
     - _AtmosphereColor: {r: 0.9386792, g: 1, b: 0.9944254, a: 1}
     - _CloudScrollDirection: {r: 1, g: 0.2, b: 0, a: 0}
