@@ -1540,7 +1540,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ' 0 / 20'
+  m_text: ' 0 / 30'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 45c355f1f31a8cb428bdfc470b244a10, type: 2}
   m_sharedMaterial: {fileID: -1498931162575593588, guid: 45c355f1f31a8cb428bdfc470b244a10, type: 2}
@@ -1794,6 +1794,8 @@ MonoBehaviour:
   musicSource: {fileID: 1665712910}
   sfxSource: {fileID: 1665712909}
   clickSound: {fileID: 8300000, guid: a8f3c67c32b196e47a10bb54471ab484, type: 3}
+  winSound: {fileID: 8300000, guid: f4eac686c408d834bab28878b3459bac, type: 3}
+  loseSound: {fileID: 8300000, guid: 22b6c6460c9508245bde6eace4498f17, type: 3}
   circlePrefab: {fileID: 2331779916270204980, guid: 4494f75990d25994b9fde07dbd437585, type: 3}
   circleRadius: 2
   circlesLayerMask:

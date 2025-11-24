@@ -12,11 +12,13 @@ public class GameManager : MonoBehaviour
     public GameObject winScreen;
     public GameObject lossScreen;
 
-    
     [Header("Audio Settings")]
-    public AudioSource musicSource; 
-    public AudioSource sfxSource;  
-    public AudioClip clickSound;   
+    public AudioSource musicSource;
+    public AudioSource sfxSource;
+    public AudioClip clickSound;
+    // === NEW VARIABLES ===
+    public AudioClip winSound;  // Drag win sound here
+    public AudioClip loseSound; // Drag lose sound here
 
     [Header("Game Setup")]
     public GameObject circlePrefab;
@@ -71,7 +73,6 @@ public class GameManager : MonoBehaviour
         lossScreen.SetActive(false);
         UpdateUI();
 
-      
         if (musicSource != null)
         {
             musicSource.Play();
@@ -80,12 +81,10 @@ public class GameManager : MonoBehaviour
         SpawnNextCircle();
     }
 
-   
     public void PlayClickSound()
     {
         if (sfxSource != null && clickSound != null)
         {
-         
             sfxSource.PlayOneShot(clickSound);
         }
     }
@@ -129,7 +128,6 @@ public class GameManager : MonoBehaviour
 
         if (numberClicked == currentTargetNumber)
         {
-            
             PlayClickSound();
 
             circlesClicked++;
@@ -161,11 +159,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // === MODIFIED ENDGAME FUNCTION ===
     void EndGame(bool clickedAllCircles)
     {
         gameIsActive = false;
 
-   
+        // Stop the background music so we can hear the win/loss sound
         if (musicSource != null)
         {
             musicSource.Stop();
@@ -177,17 +176,37 @@ public class GameManager : MonoBehaviour
             Destroy(circle.gameObject);
         }
 
+        // Determine if we Won or Lost
+        bool playerWon = false;
+
         if (clickedAllCircles)
         {
-            winScreen.SetActive(true);
+            playerWon = true;
         }
-        else if (circlesClicked >= winScoreRequirement && !clickedAllCircles)
+        else if (circlesClicked >= winScoreRequirement && currentFails < maxFails)
+        {
+            // If time ran out, but score is high enough AND we didn't fail out
+            playerWon = true;
+        }
+
+        // Show Screen and Play Sound based on result
+        if (playerWon)
         {
             winScreen.SetActive(true);
+            // Play Win Sound
+            if (sfxSource != null && winSound != null)
+            {
+                sfxSource.PlayOneShot(winSound);
+            }
         }
         else
         {
             lossScreen.SetActive(true);
+            // Play Loss Sound
+            if (sfxSource != null && loseSound != null)
+            {
+                sfxSource.PlayOneShot(loseSound);
+            }
         }
     }
 
