@@ -16,14 +16,14 @@ public class VaccineOrange : MonoBehaviour
     public void ExecuteTurn()
     {
         // 1. Gather data from Unity Physics (The "Sensing" step)
-        Vector2Int myGridPos = GetGridPosition();
-        var percepts = PerformRaycasts();
+        //Vector2Int myGridPos = GetGridPosition();
+        //var percepts = PerformRaycasts();
 
         // 2. Run the Logic
-        string action = _logicAgent.GetNextMove(myGridPos, null, new List<(string, Vector2Int)>(), percepts);
+        //string action = _logicAgent.GetNextMove(myGridPos, null, new List<(string, Vector2Int)>(), percepts);
 
         // 3. Move the Unity Object
-        ApplyMovement(action);
+        //ApplyMovement(action);
     }
 
     // ... helper functions for Raycasting and Movement ...
