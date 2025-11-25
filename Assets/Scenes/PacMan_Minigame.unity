@@ -2676,7 +2676,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2566888480654683493}
   m_Layer: 0
-  m_Name: Untitled
+  m_Name: PacmanAssets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2921,6 +2921,7 @@ GameObject:
   - component: {fileID: 6825581323572631621}
   - component: {fileID: 1835656591592214808}
   - component: {fileID: 6825581323572631622}
+  - component: {fileID: 6825581323572631623}
   m_Layer: 0
   m_Name: vacina_laranja
   m_TagString: Untagged
@@ -3237,6 +3238,7 @@ GameObject:
   - component: {fileID: 1160139062452528655}
   - component: {fileID: 5666182471661723717}
   - component: {fileID: 9036289078655168522}
+  - component: {fileID: 9036289078655168523}
   m_Layer: 0
   m_Name: vacina_vermelha
   m_TagString: Untagged
@@ -3857,6 +3859,7 @@ GameObject:
   - component: {fileID: 6344195160400963204}
   - component: {fileID: 3133932523202220555}
   - component: {fileID: 6536368774942479986}
+  - component: {fileID: 6536368774942479987}
   m_Layer: 0
   m_Name: vacina_rosa
   m_TagString: Untagged
@@ -3885,6 +3888,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.014351002, y: 0.014407733, z: 0.034363516}
   m_Center: {x: -0.0000000013624939, y: 0.000061856634, z: -0.00041120494}
+--- !u!54 &6536368774942479987
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6536368774942479985}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
 --- !u!1 &6684363854523976350
 GameObject:
   m_ObjectHideFlags: 0
@@ -3955,6 +3985,7 @@ GameObject:
   - component: {fileID: 6828951320375697649}
   - component: {fileID: 5338380892139339606}
   - component: {fileID: 8417948374351469653}
+  - component: {fileID: 8417948374351469654}
   m_Layer: 0
   m_Name: Virus
   m_TagString: Untagged
@@ -3991,6 +4022,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.014351, y: 0.014407736, z: 0.03436352}
   m_Center: {x: -0.0000000016697753, y: 0.00006185571, z: -0.00041120686}
+--- !u!54 &6825581323572631623
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3734732091002956120}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
 --- !u!33 &6828951320375697649
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4092,6 +4150,7 @@ GameObject:
   - component: {fileID: 3058160296233885155}
   - component: {fileID: 6965073767640001977}
   - component: {fileID: 7124725215199008844}
+  - component: {fileID: 7124725215199008845}
   m_Layer: 0
   m_Name: vacina_azul
   m_TagString: Untagged
@@ -4120,6 +4179,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.014350997, y: 0.014407735, z: 0.034363523}
   m_Center: {x: -0.0000000013949472, y: 0.00006185662, z: -0.00041120505}
+--- !u!54 &7124725215199008845
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7124725215199008843}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
 --- !u!1 &7161171988567599513
 GameObject:
   m_ObjectHideFlags: 0
@@ -4338,6 +4424,33 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.011388233
   m_Center: {x: -0.00024782072, y: 0.0008250478, z: 1.7202753e-11}
+--- !u!54 &8417948374351469654
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6813597211320352472}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
 --- !u!4 &8540432847437320547
 Transform:
   m_ObjectHideFlags: 0
@@ -4569,6 +4682,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.014351002, y: 0.014407733, z: 0.034363516}
   m_Center: {x: -0.0000000013624939, y: 0.00006185617, z: -0.00041120494}
+--- !u!54 &9036289078655168523
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5095265661946166216}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
