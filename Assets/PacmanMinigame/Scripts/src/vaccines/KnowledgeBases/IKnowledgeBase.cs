@@ -13,7 +13,7 @@ public interface IKnowledgeBase
     /// <param name="percepts">Dictionary mapping coordinates to what is seen ("WALL", "EMPTY", etc.).</param>
     void Tell(
         Vector2Int myPos,
-        Vector2Int virusPos,
+        Vector2Int? virusPos,
         List<(string id, Vector2Int pos)> otherVaccines,
         Dictionary<Vector2Int, string> percepts
     );
