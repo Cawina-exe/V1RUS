@@ -6364,8 +6364,8 @@
     "m_ObjectId": "8f371a1e83a3486c8aec16a6ba7bc913",
     "m_Title": "Voronoi Virus Adding",
     "m_Position": {
-        "x": -1364.0001220703125,
-        "y": 1005.0000610351563
+        "x": -1364.0,
+        "y": 1005.0
     }
 }
 
@@ -7023,7 +7023,7 @@
     "m_Title": "Channel G Lookup and Scrolling",
     "m_Position": {
         "x": -2144.0,
-        "y": 167.99996948242188
+        "y": 168.0
     }
 }
 
@@ -7221,7 +7221,7 @@
     "m_Title": "Binary Scrolling",
     "m_Position": {
         "x": -1380.0,
-        "y": 1723.999755859375
+        "y": 1724.0
     }
 }
 
