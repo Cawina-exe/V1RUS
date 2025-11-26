@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Pacman.Agents;
 
 public class VaccineOrange : MonoBehaviour
 {
