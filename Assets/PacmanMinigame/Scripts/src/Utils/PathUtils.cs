@@ -1,59 +1,142 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class PathUtils
+namespace Pacman.Utils
 {
-    // Returns a list of steps including start and end
-    public static List<Vector2Int> BFS(Vector2Int start, Vector2Int? goal, HashSet<Vector2Int> walkableTiles)
+    /// <summary>
+    /// Pathfinding utilities.
+    /// </summary>
+    public static class PathUtils
     {
-        if (goal == null || !walkableTiles.Contains(goal.Value) || !walkableTiles.Contains(start))
-            return null;
-
-        var queue = new Queue<(Vector2Int pos, List<Vector2Int> path)>();
-        queue.Enqueue((start, new List<Vector2Int> { start }));
-
-        var visited = new HashSet<Vector2Int> { start };
-
-        while (queue.Count > 0)
+        /// <summary>
+        /// Gets the 4 adjacent neighbors of a coordinate.
+        /// </summary>
+        public static List<Vector2Int> GetNeighbors(Vector2Int pos)
         {
-            var (current, path) = queue.Dequeue();
-
-            if (current == goal.Value)
-                return path;
-
-            foreach (Vector2Int neighbor in GetNeighbors(current))
+            return new List<Vector2Int>
             {
-                if (walkableTiles.Contains(neighbor) && !visited.Contains(neighbor))
+                new Vector2Int(pos.x + 1, pos.y), // Right
+                new Vector2Int(pos.x - 1, pos.y), // Left
+                new Vector2Int(pos.x, pos.y + 1), // Up
+                new Vector2Int(pos.x, pos.y - 1)  // Down
+            };
+        }
+
+        /// <summary>
+        /// Finds the shortest path from start to goal using BFS.
+        /// Only searches tiles within 'safeTiles'.
+        /// Returns a list of coordinates (including start and end), or null if no path.
+        /// </summary>
+        public static List<Vector2Int> BfsPathfinder(
+            Vector2Int startPos,
+            Vector2Int? goalPos,
+            HashSet<Vector2Int> safeTiles)
+        {
+            if (goalPos == null) 
+                return null;
+
+            Vector2Int goal = goalPos.Value; // Unwrap nullable
+
+            if (startPos == goal)
+                return new List<Vector2Int> { startPos };
+
+            // Check if goal or start are even reachable/safe
+            if (!safeTiles.Contains(goal) || !safeTiles.Contains(startPos))
+                return null;
+
+            // Queue stores: (CurrentPosition, PathSoFar)
+            var queue = new Queue<(Vector2Int, List<Vector2Int>)>();
+            queue.Enqueue((startPos, new List<Vector2Int> { startPos }));
+
+            var visited = new HashSet<Vector2Int> { startPos };
+
+            while (queue.Count > 0)
+            {
+                var (currentPos, path) = queue.Dequeue();
+
+                foreach (Vector2Int neighbor in GetNeighbors(currentPos))
                 {
-                    visited.Add(neighbor);
-                    var newPath = new List<Vector2Int>(path) { neighbor };
-                    queue.Enqueue((neighbor, newPath));
+                    if (neighbor == goal)
+                    {
+                        // Path found: append neighbor and return
+                        var finalPath = new List<Vector2Int>(path) { neighbor };
+                        return finalPath;
+                    }
+
+                    if (safeTiles.Contains(neighbor) && !visited.Contains(neighbor))
+                    {
+                        visited.Add(neighbor);
+                        // Create new path extending the current one
+                        var newPath = new List<Vector2Int>(path) { neighbor };
+                        queue.Enqueue((neighbor, newPath));
+                    }
                 }
             }
+
+            return null; // No path found
         }
-        return null;
-    }
 
-    public static List<Vector2Int> GetNeighbors(Vector2Int p)
-    {
-        return new List<Vector2Int>
+        /// <summary>
+        /// Determines the move ('UP', 'DOWN', etc.) from the current position
+        /// to the next step in the path.
+        /// </summary>
+        public static string GetMoveFromPath(Vector2Int currentPos, List<Vector2Int> path)
         {
-            new Vector2Int(p.x + 1, p.y), new Vector2Int(p.x - 1, p.y),
-            new Vector2Int(p.x, p.y + 1), new Vector2Int(p.x, p.y - 1)
-        };
-    }
+            if (path == null || path.Count < 2)
+                return "WAIT";
 
-    // Helper to calculate direction string from path
-    public static string GetMoveFromPath(Vector2Int current, List<Vector2Int> path)
-    {
-        if (path == null || path.Count < 2) return "WAIT";
-        Vector2Int next = path[1]; // path[0] is current
-        Vector2Int delta = next - current;
+            // path[0] is currentPos, path[1] is the next step
+            Vector2Int nextPos = path[1];
+            Vector2Int diff = nextPos - currentPos;
 
-        if (delta == Vector2Int.up) return "UP";
-        if (delta == Vector2Int.down) return "DOWN";
-        if (delta == Vector2Int.left) return "LEFT";
-        if (delta == Vector2Int.right) return "RIGHT";
-        return "WAIT";
+            // Compare diff against our defined MOVES
+            foreach (var kvp in TypesUtils.MOVES)
+            {
+                if (kvp.Value == diff)
+                    return kvp.Key;
+            }
+
+            return "WAIT";
+        }
+
+        /// <summary>
+        /// Finds the coordinate in 'targetCoords' that is closest to 'startPos'
+        /// by path distance, using only 'safeTiles'.
+        /// </summary>
+        public static Vector2Int? FindNearestCoord(
+            Vector2Int startPos,
+            HashSet<Vector2Int> targetCoords,
+            HashSet<Vector2Int> safeTiles)
+        {
+            if (targetCoords.Contains(startPos))
+                return startPos;
+
+            if (targetCoords.Count == 0 || safeTiles.Count == 0)
+                return null;
+
+            var queue = new Queue<Vector2Int>();
+            queue.Enqueue(startPos);
+
+            var visited = new HashSet<Vector2Int> { startPos };
+
+            while (queue.Count > 0)
+            {
+                Vector2Int currentPos = queue.Dequeue();
+
+                foreach (Vector2Int neighbor in GetNeighbors(currentPos))
+                {
+                    if (targetCoords.Contains(neighbor))
+                        return neighbor; // Found the closest target
+
+                    if (safeTiles.Contains(neighbor) && !visited.Contains(neighbor))
+                    {
+                        visited.Add(neighbor);
+                        queue.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            return null; // No reachable target
+        }
     }
 }
