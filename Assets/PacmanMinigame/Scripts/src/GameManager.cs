@@ -45,7 +45,7 @@ namespace Pacman
             totalPellets = pellets.Length;
             eatedPellets = 0;
 
-            Debug.Log($"Game Started! Pellets to eat: {eatedPellets}");
+            Debug.Log($"Game Started! Pellets to eat: {totalPellets}");
         }
 
         public void PelletEaten(int pointValue)
