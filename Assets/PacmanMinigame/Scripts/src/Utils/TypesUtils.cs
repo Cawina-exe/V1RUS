@@ -5,7 +5,6 @@ namespace Pacman.Utils
 {
     /// <summary>
     /// Utility class defining core types and constants for the grid environment.
-    /// Translates 'types_utils.py' to C#.
     /// </summary>
     public static class TypesUtils
     {
