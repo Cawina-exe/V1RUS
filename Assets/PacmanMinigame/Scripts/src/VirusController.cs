@@ -62,12 +62,12 @@ namespace Pacman.Player
 
         void FixedUpdate()
         {
-            // 2. Apply Physics (Fixed Interval)
+            // Apply Physics (Fixed Interval)
 
             // Smoothly interpolate velocity for responsive feel
             _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, _targetVelocity, Time.fixedDeltaTime * 15f);
 
-            // 3. Lane Snapping
+            // Lane Snapping
             SnapToGridCenter();
         }
 
