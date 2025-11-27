@@ -116,7 +116,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.014
+  m_Radius: 0.013
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6525595141865416991
 Rigidbody:
@@ -157,9 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e97c162fd1dccc4698d25038b572e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pacman.Player.VirusController
-  moveSpeed: 6
+  moveSpeed: 8
   snapStrength: 10
-  tileSize: 2
   wallLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024

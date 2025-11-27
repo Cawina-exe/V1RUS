@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pacman.Agents.VaccineController
   vaccineType: 1
-  moveSpeed: 5
+  moveSpeed: 6
   decisionInterval: 0.2
   tileSize: 1
   wallLayer:
@@ -164,5 +164,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.012
+  m_Radius: 0.014
   m_Center: {x: -0.0000000013272101, y: 0.00006185664, z: -0.00041120496}
