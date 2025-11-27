@@ -8,7 +8,6 @@ namespace Pacman.Agents.KBs
     /// <summary>
     /// KB for Vaccine Blue and Vaccine Pink (formerly Ghost A).
     /// Logic: Model-Based Reflex Agent using Propositional Logic.
-    /// Translates 'ghosts/ghost_a/ghost_a_kb.py'.
     /// </summary>
     public class KnowledgeBaseA : IKnowledgeBase
     {
