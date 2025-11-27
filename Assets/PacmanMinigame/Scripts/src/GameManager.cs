@@ -8,16 +8,17 @@ namespace Pacman
         public static GameManager Instance { get; private set; }
 
         [Header("Game State")]
-        public int eatedPellets = 0;
-        public int totalPellets = 30; // VERIFY IN GAME SCENE!!!!!!!
+        public int eatedPellets;
+        public int totalPellets;
         public bool isGameOver = false;
         public bool isVictory = false;
 
         [Header("UI (Optional)")]
         // Assign these in Inspector if you have Text meshes
-         public eatedPellets;
-         public GameObject winScreen;
-         public GameObject loseScreen;
+        //public TMP_Text scoreText;
+        //public eatedPellets;
+        public GameObject winScreen;
+        public GameObject loseScreen;
 
         private void Awake()
         {
@@ -32,10 +33,17 @@ namespace Pacman
 
         void Start()
         {
-            // 1. Count all pellets in the scene automatically
-            // (Assumes your pellets have the tag "Pellet")
+            // Count all pellets in the scene automatically
             GameObject[] pellets = GameObject.FindGameObjectsWithTag("Pellet");
-            eatedPellets = pellets.Length;
+
+            // ============================================
+            // Optional: Update UI here if you implement it
+            // ============================================
+            // if (scoreText != null) scoreText.text = $"Pellets: {eatedPellets}/{totalPellets}";
+
+            // Set totalPellets and eatedPellets
+            totalPellets = pellets.Length;
+            eatedPellets = 0;
 
             Debug.Log($"Game Started! Pellets to eat: {eatedPellets}");
         }
