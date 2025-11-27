@@ -23,19 +23,18 @@ namespace Pacman.Player
         void Start()
         {
             _rb = GetComponent<Rigidbody>();
-            // Ensure physics constraints are set
+            
             _rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
         }
 
         void Update()
         {
-            // 1. Read Input
+        
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) _nextDir = "UP";
             else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) _nextDir = "DOWN";
             else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) _nextDir = "LEFT";
             else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) _nextDir = "RIGHT";
 
-            // 2. Execute Move
             if (_nextDir != "WAIT")
             {
                 if (CanMoveInDirection(_nextDir))
@@ -59,7 +58,7 @@ namespace Pacman.Player
 
         void FixedUpdate()
         {
-            // Use velocity (Unity 2022) or linearVelocity (Unity 6)
+           
             _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, _targetVelocity, Time.fixedDeltaTime * 15f);
             SnapToGridCenter();
         }
@@ -115,15 +114,15 @@ namespace Pacman.Player
             return !Physics.Raycast(transform.position, dirVec, _rayDistance, wallLayer);
         }
 
-        // --- NEW COLLISION LOGIC ---
+      
 
-        // 1. PHYSICAL COLLISIONS (Walls, Vaccines)
+       
         private void OnCollisionEnter(Collision collision)
         {
-            // If we hit a Vaccine (Solid object)
+           
             if (collision.gameObject.CompareTag("Vaccine"))
             {
-                Debug.Log("HIT VACCINE!"); // Debug check
+                Debug.Log("HIT VACCINE!"); 
                 if (Pacman.GameManager.Instance != null)
                 {
                     Pacman.GameManager.Instance.HandleDeath();
@@ -131,10 +130,10 @@ namespace Pacman.Player
             }
         }
 
-        // 2. TRIGGER OVERLAPS (Pellets)
+        
         private void OnTriggerEnter(Collider other)
         {
-            // If we pass through a Pellet (Trigger object)
+           
             if (other.CompareTag("Pellet"))
             {
                 if (Pacman.GameManager.Instance != null)

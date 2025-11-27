@@ -5,41 +5,35 @@ using Pacman.Utils;
 
 namespace Pacman.Agents.KBs
 {
-    /// <summary>
-    /// KB for Vaccine Blue (formerly Ghost B).
-    /// Logic: Optimistic Model-Based Agent using PL to route through the fog of war.
-    /// </summary>
+  
     public class KnowledgeBaseB : IKnowledgeBase
     {
-        // --- World Model ---
+      
         private HashSet<Vector2Int> _walls = new HashSet<Vector2Int>();
         private HashSet<Vector2Int> _safeTiles = new HashSet<Vector2Int>();
         private HashSet<Vector2Int> _unknownTiles = new HashSet<Vector2Int>();
         private HashSet<Vector2Int> _junctions = new HashSet<Vector2Int>();
         private HashSet<Vector2Int> _believedPellets = new HashSet<Vector2Int>();
-
-        // NEW: Track goals we tried but couldn't reach to prevent looping
         private HashSet<Vector2Int> _unreachableGoals = new HashSet<Vector2Int>();
 
         private bool _initialized = false;
 
-        // --- Beliefs ---
+        
         private Vector2Int _myPos;
         private bool _virusVisible = false;
         private Vector2Int? _virusLastPos = null;
-        // Clues: List of (Position, Age)
+       
         private List<(Vector2Int pos, int age)> _clues = new List<(Vector2Int, int)>();
 
-        // --- Memory & Plan ---
+       
         private Vector2Int? _goal = null;
         private List<Vector2Int> _currentPath = new List<Vector2Int>();
 
-        // --- Junction Memory ---
-        // FIFO Queue for last N visited junctions
+    
         private Queue<Vector2Int> _visitedJunctions = new Queue<Vector2Int>();
         private const int MAX_VISITED_HISTORY = 12;
 
-        // --- Camping Logic ---
+        
         private bool _isLoitering = false;
         private int _loiterTimer = 0;
         private Vector2Int? _loiterAnchor = null;
@@ -54,13 +48,13 @@ namespace Pacman.Agents.KBs
         {
             _myPos = myPos;
 
-            // Clear unreachable cache if we spot the virus (context switch)
+       
             if (virusPos.HasValue && !_virusVisible) _unreachableGoals.Clear();
 
             if (!_initialized)
             {
-                MarkSafe(myPos); // Current tile is safe
-                // Pre-seed unknown frontier
+                MarkSafe(myPos); 
+                
                 foreach (var n in PathUtils.GetNeighbors(myPos))
                 {
                     if (!_walls.Contains(n)) _unknownTiles.Add(n);
@@ -88,7 +82,7 @@ namespace Pacman.Agents.KBs
                 }
                 else
                 {
-                    MarkSafe(pos); // Visible tiles are safe
+                    MarkSafe(pos); 
 
                     if (item == "PELLET")
                     {
@@ -96,8 +90,7 @@ namespace Pacman.Agents.KBs
                     }
                     else if (item == "EMPTY")
                     {
-                        // If we thought there was a pellet here, but now we see empty,
-                        // that means Pacman ate it recently -> Clue!
+                   
                         if (_believedPellets.Contains(pos))
                         {
                             newCluePos = pos;
@@ -107,11 +100,11 @@ namespace Pacman.Agents.KBs
                 }
             }
 
-            // 2. Update Clues (Aging)
+           
             var aliveClues = new List<(Vector2Int, int)>();
             foreach (var clue in _clues)
             {
-                // Ignore if we are standing on it or if we see the virus
+                
                 if (clue.pos == _myPos) continue;
                 if (_virusVisible) continue;
 
@@ -122,42 +115,42 @@ namespace Pacman.Agents.KBs
             }
             _clues = aliveClues;
 
-            // 3. Update Virus Interaction
+            
             if (virusPos.HasValue)
             {
                 _virusVisible = true;
                 _virusLastPos = virusPos;
                 _clues.Clear();
                 _isLoitering = false;
-                _goal = null; // Reset goal to chase immediately
+                _goal = null; 
             }
             else
             {
                 _virusVisible = false;
                 if (newCluePos.HasValue)
                 {
-                    // Insert new clue at start (index 0)
+                   
                     _clues.Insert(0, (newCluePos.Value, 0));
-                    if (_clues.Count > 2) _clues.RemoveAt(_clues.Count - 1); // Keep max 2
+                    if (_clues.Count > 2) _clues.RemoveAt(_clues.Count - 1); 
                 }
             }
         }
 
         public string Ask()
         {
-            // "Unknown" is "Walkable until proven otherwise"
+        
             var planningMesh = new HashSet<Vector2Int>(_safeTiles);
             planningMesh.UnionWith(_unknownTiles);
-            planningMesh.Add(_myPos); // Ensure start is valid
+            planningMesh.Add(_myPos); 
 
-            // Defensive: if goal became a wall, drop it
+         
             if (_goal.HasValue && _walls.Contains(_goal.Value))
             {
                 _goal = null;
                 _currentPath.Clear();
             }
 
-            // 1. LOITERING (Camping at junction)
+            
             if (_isLoitering)
             {
                 _loiterTimer--;
@@ -173,17 +166,17 @@ namespace Pacman.Agents.KBs
                 }
             }
 
-            // 2. ARRIVAL & CAMPING
+          
             if (_goal.HasValue && _myPos == _goal.Value)
             {
                 if (_junctions.Contains(_myPos))
                 {
-                    // Update Queue
+                    
                     _visitedJunctions.Enqueue(_myPos);
                     while (_visitedJunctions.Count > MAX_VISITED_HISTORY)
                         _visitedJunctions.Dequeue();
 
-                    // Start Loitering
+                    
                     _isLoitering = true;
                     _loiterTimer = MAX_LOITER_TIME;
                     _loiterAnchor = _myPos;
@@ -194,20 +187,19 @@ namespace Pacman.Agents.KBs
                 }
                 else
                 {
-                    // Reached non-junction goal (e.g. clue) -> just continue
+                    
                     _goal = null;
                     _currentPath.Clear();
                 }
             }
 
-            // 3. GOAL SELECTION & RE-SELECTION LOOP (Fix for Getting Stuck)
             int attempts = 0;
-            // Loop allows us to retry if the picked goal is unreachable (path failure)
+        
             while ((_goal == null || _currentPath.Count == 0) && attempts < 10)
             {
                 attempts++;
 
-                // If we have no goal, pick one
+             
                 if (_goal == null)
                 {
                     _goal = SelectNewGoal(planningMesh);
@@ -215,30 +207,27 @@ namespace Pacman.Agents.KBs
 
                 if (_goal.HasValue)
                 {
-                    // Ensure _currentPath is not null
+                   
                     if (_currentPath == null) _currentPath = new List<Vector2Int>();
 
-                    // Try to path to it
-                    // NOTE: If pathfinding fails, BfsPathfinder returns NULL
+                   
                     var newPath = PathUtils.BfsPathfinder(_myPos, _goal, planningMesh);
 
                     if (newPath != null && newPath.Count > 0)
                     {
                         _currentPath = newPath;
-                        if (_currentPath[0] == _myPos) _currentPath.RemoveAt(0); // Pop start
+                        if (_currentPath[0] == _myPos) _currentPath.RemoveAt(0);
                     }
                     else
                     {
-                        // Path failed! This goal is bad (or unreachable). 
-                        // Mark it so we don't pick it again immediately.
+                     
                         _unreachableGoals.Add(_goal.Value);
                         _goal = null;
                     }
                 }
                 else
                 {
-                    // No valid goals found via standard logic?
-                    // Fallback: Pick a random valid neighbor to break paralysis
+                  
                     var neighbors = PathUtils.GetNeighbors(_myPos)
                                              .Where(n => planningMesh.Contains(n) && !_walls.Contains(n))
                                              .ToList();
@@ -247,16 +236,16 @@ namespace Pacman.Agents.KBs
                         _goal = neighbors[Random.Range(0, neighbors.Count)];
                         _currentPath = new List<Vector2Int> { _goal.Value };
                     }
-                    break; // Exit loop, we forced a move
+                    break; 
                 }
             }
 
-            // 5. EXECUTION
+           
             if (_currentPath != null && _currentPath.Count > 0)
             {
                 Vector2Int nextStep = _currentPath[0];
 
-                // Double check wall
+              
                 if (_walls.Contains(nextStep))
                 {
                     _currentPath.Clear();
@@ -264,7 +253,7 @@ namespace Pacman.Agents.KBs
                     return "WAIT";
                 }
 
-                // Optimization: Pop step if we are on it
+               
                 if (nextStep == _myPos)
                 {
                     _currentPath.RemoveAt(0);
@@ -275,11 +264,10 @@ namespace Pacman.Agents.KBs
                 return PathUtils.GetMoveFromPath(_myPos, new List<Vector2Int> { _myPos, nextStep });
             }
 
-            // 6. FALLBACK
+            
             return GetRandomOptimisticMove();
         }
 
-        // --- Helpers ---
 
         private void MarkSafe(Vector2Int pos)
         {
@@ -289,7 +277,6 @@ namespace Pacman.Agents.KBs
             _walls.Remove(pos);
             _unknownTiles.Remove(pos);
 
-            // Add neighbors to unknown if fresh
             foreach (var n in PathUtils.GetNeighbors(pos))
             {
                 if (!_safeTiles.Contains(n) && !_walls.Contains(n))
@@ -309,7 +296,7 @@ namespace Pacman.Agents.KBs
             int count = 0;
             foreach (var n in PathUtils.GetNeighbors(pos))
             {
-                // Optimistic: if not a wall, it's a path
+                
                 if (!_walls.Contains(n)) count++;
             }
             if (count >= 3) _junctions.Add(pos);
@@ -321,7 +308,7 @@ namespace Pacman.Agents.KBs
 
             if (_myPos == _loiterAnchor.Value)
             {
-                // Step out to a random valid neighbor
+              
                 var neighbors = PathUtils.GetNeighbors(_loiterAnchor.Value)
                                          .Where(n => mesh.Contains(n))
                                          .ToList();
@@ -332,29 +319,27 @@ namespace Pacman.Agents.KBs
                 }
                 return "WAIT";
             }
-            // Step back to anchor
+           
             return PathUtils.GetMoveFromPath(_myPos, new List<Vector2Int> { _myPos, _loiterAnchor.Value });
         }
 
         private Vector2Int? SelectNewGoal(HashSet<Vector2Int> mesh)
         {
-            // 1. CHASE
+           
             if (_virusVisible) return _virusLastPos;
 
-            // 2. CLUES
+           
             if (_clues.Count > 0) return SelectBestClue();
 
-            // Helper for finding nearest
-            // NEW: Added check for _unreachableGoals
+          
             bool IsValid(Vector2Int c) => !_walls.Contains(c) && mesh.Contains(c) && c != _myPos && !_unreachableGoals.Contains(c);
 
-            // 3. FAR JUNCTIONS (Avoid visited)
+            
             var farJuncs = new HashSet<Vector2Int>();
             foreach (var j in _junctions)
             {
                 if (!_visitedJunctions.Contains(j) && IsValid(j))
                 {
-                    // Simple Manhattan distance > 5
                     if (Mathf.Abs(j.x - _myPos.x) + Mathf.Abs(j.y - _myPos.y) > 5)
                         farJuncs.Add(j);
                 }
@@ -363,18 +348,17 @@ namespace Pacman.Agents.KBs
             if (farJuncs.Count > 0)
                 return PathUtils.FindNearestCoord(_myPos, farJuncs, mesh);
 
-            // 4. UNKNOWN FRONTIER
+           
             var validUnknowns = new HashSet<Vector2Int>(_unknownTiles.Where(u => IsValid(u)));
             if (validUnknowns.Count > 0)
                 return PathUtils.FindNearestCoord(_myPos, validUnknowns, mesh);
 
-            // 5. ANY JUNCTION
+           
             var nearbyJuncs = new HashSet<Vector2Int>(_junctions.Where(j => j != _myPos && IsValid(j)));
             if (nearbyJuncs.Count > 0)
                 return PathUtils.FindNearestCoord(_myPos, nearbyJuncs, mesh);
 
-            // 6. NEW: RANDOM SAFE TILE (Last Resort to break loops)
-            // If everything else failed (or was unreachable), pick ANY valid safe tile.
+            
             var safeList = _safeTiles.Where(s => IsValid(s)).ToList();
             if (safeList.Count > 0) return safeList[Random.Range(0, safeList.Count)];
 
@@ -408,7 +392,7 @@ namespace Pacman.Agents.KBs
                 if (move == "WAIT") continue;
 
                 Vector2Int next = _myPos + kvp.Value;
-                // Valid if not a known wall, and is either safe or unknown
+               
                 if (!_walls.Contains(next) && (_safeTiles.Contains(next) || _unknownTiles.Contains(next)))
                 {
                     possible.Add(move);

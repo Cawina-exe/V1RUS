@@ -5,29 +5,24 @@ using Pacman.Utils;
 
 namespace Pacman.Agents.KBs
 {
-    /// <summary>
-    /// KB for Vaccine Orange and Vaccine Pink (formerly Ghost A).
-    /// Logic: Model-Based Reflex Agent using Propositional Logic.
-    /// FIX: Includes Anti-Backtrack logic to prevent oscillation.
-    /// </summary>
+  
     public class KnowledgeBaseA : IKnowledgeBase
     {
-        // --- Internal State ---
+       
         private HashSet<Vector2Int> _walls = new HashSet<Vector2Int>();
         private HashSet<Vector2Int> _safeTiles = new HashSet<Vector2Int>();
 
-        // State Propositions
         private bool _statePatrolling = true;
         private bool _stateChasing = false;
         private bool _statePursuing = false;
         private bool _stateInvestigating = false;
 
-        // Beliefs
+       
         private Vector2Int? _lastKnownVirus = null;
         private string _lastMove = "WAIT";
         private Vector2Int? _investigationTarget = null;
 
-        // Percepts
+        
         private Vector2Int _myPos;
         private bool _seeVirus = false;
         private Vector2Int? _virusPosPercept = null;
@@ -120,7 +115,7 @@ namespace Pacman.Agents.KBs
 
             var candidates = new List<string>();
 
-            // 1. Rank moves by distance reduction
+        
             if (Mathf.Abs(dx) >= Mathf.Abs(dy))
             {
                 candidates.Add(dx > 0 ? "RIGHT" : "LEFT");
@@ -132,23 +127,21 @@ namespace Pacman.Agents.KBs
                 if (dx != 0) candidates.Add(dx > 0 ? "RIGHT" : "LEFT");
             }
 
-            // 2. Add remaining fallback moves
+           
             foreach (string m in TypesUtils.DIRECTIONS)
             {
                 if (m != "WAIT" && !candidates.Contains(m)) candidates.Add(m);
             }
 
-            // 3. CRITICAL FIX: Deprioritize Reverse Move
-            // Move the "Reverse" direction to the very end of the list.
-            // This forces the agent to take a side path rather than bouncing back.
+         
             string reverse = GetReverse(_lastMove);
             if (candidates.Contains(reverse))
             {
                 candidates.Remove(reverse);
-                candidates.Add(reverse); // Add back at the end as last resort
+                candidates.Add(reverse);
             }
 
-            // 4. Select first valid move
+           
             foreach (var move in candidates)
             {
                 Vector2Int nextPos = _myPos + TypesUtils.MOVES[move];
@@ -172,15 +165,15 @@ namespace Pacman.Agents.KBs
 
             if (validMoves.Count == 0) return "WAIT";
 
-            // Momentum
+       
             if (validMoves.Contains(_lastMove)) return _lastMove;
 
-            // Turn (Non-Reverse)
+           
             var nonReverseMoves = validMoves.Where(m => m != reverseMove).ToList();
             if (nonReverseMoves.Count > 0)
                 return nonReverseMoves[Random.Range(0, nonReverseMoves.Count)];
 
-            // Dead End
+           
             return validMoves[0];
         }
 

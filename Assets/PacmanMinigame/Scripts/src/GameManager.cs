@@ -20,12 +20,12 @@ namespace Pacman
         public GameObject loseScreen;
 
         [Header("Audio")]
-        public AudioSource musicSource; // Drag "MusicPlayer" here
-        public AudioSource sfxSource;   // Drag "GameManager" itself here
+        public AudioSource musicSource; 
+        public AudioSource sfxSource;   
 
-        public AudioClip pelletClip;    // Drag "Waka/Coin" sound here
-        public AudioClip winClip;       // Drag "Victory" sound here
-        public AudioClip loseClip;      // Drag "Death" sound here
+        public AudioClip pelletClip;    
+        public AudioClip winClip;       
+        public AudioClip loseClip;      
 
         private void Awake()
         {
@@ -39,11 +39,9 @@ namespace Pacman
 
         void Start()
         {
-            // 1. Setup Audio
-            // Ensure we have an AudioSource for SFX if user forgot
+            
             if (sfxSource == null) sfxSource = gameObject.AddComponent<AudioSource>();
 
-            // 2. Count pellets
             GameObject[] pellets = GameObject.FindGameObjectsWithTag("Pellet");
             totalPellets = pellets.Length;
             eatenPellets = 0;
@@ -59,7 +57,7 @@ namespace Pacman
             eatenPellets++;
             UpdateScoreUI();
 
-            // PLAY SOUND: Use PlayOneShot so sounds can overlap (waka-waka style)
+          
             if (sfxSource != null && pelletClip != null)
             {
                 sfxSource.PlayOneShot(pelletClip);
@@ -78,7 +76,7 @@ namespace Pacman
             Debug.Log("GAME OVER!");
             isGameOver = true;
 
-            // Stop Music, Play Death Sound
+          
             if (musicSource != null) musicSource.Stop();
             if (sfxSource != null && loseClip != null) sfxSource.PlayOneShot(loseClip);
 
@@ -90,7 +88,7 @@ namespace Pacman
             Debug.Log("VICTORY!");
             isVictory = true;
 
-            // Stop Music, Play Win Sound
+           
             if (musicSource != null) musicSource.Stop();
             if (sfxSource != null && winClip != null) sfxSource.PlayOneShot(winClip);
 
