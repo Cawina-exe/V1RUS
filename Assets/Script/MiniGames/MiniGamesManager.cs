@@ -18,7 +18,7 @@ public class MiniGamesManager : MonoBehaviour
         {
             timeRemaining -= Time.deltaTime;
 
-            if (timeRemaining <= 210f && firstMiniGame == false)
+            if (timeRemaining <= 300f && firstMiniGame == false)
             {
                 miniGamePopUp.StartGame();
                 firstMiniGame = true;
