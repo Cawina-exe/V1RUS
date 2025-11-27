@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // For restarting/loading scenes
+using UnityEngine.SceneManagement;
+using TMPro;
 
 namespace Pacman
 {
@@ -8,21 +9,26 @@ namespace Pacman
         public static GameManager Instance { get; private set; }
 
         [Header("Game State")]
-        public int eatedPellets;
-        public int totalPellets;
+        public int eatenPellets = 0;
+        public int totalPellets = 0;
         public bool isGameOver = false;
         public bool isVictory = false;
 
-        [Header("UI (Optional)")]
-        // Assign these in Inspector if you have Text meshes
-        //public TMP_Text scoreText;
-        //public eatedPellets;
+        [Header("UI References")]
+        public TMP_Text scoreText;
         public GameObject winScreen;
         public GameObject loseScreen;
 
+        [Header("Audio")]
+        public AudioSource musicSource; // Drag "MusicPlayer" here
+        public AudioSource sfxSource;   // Drag "GameManager" itself here
+
+        public AudioClip pelletClip;    // Drag "Waka/Coin" sound here
+        public AudioClip winClip;       // Drag "Victory" sound here
+        public AudioClip loseClip;      // Drag "Death" sound here
+
         private void Awake()
         {
-            // Singleton pattern: Ensure only one GameManager exists
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
@@ -33,18 +39,16 @@ namespace Pacman
 
         void Start()
         {
-            // Count all pellets in the scene automatically
+            // 1. Setup Audio
+            // Ensure we have an AudioSource for SFX if user forgot
+            if (sfxSource == null) sfxSource = gameObject.AddComponent<AudioSource>();
+
+            // 2. Count pellets
             GameObject[] pellets = GameObject.FindGameObjectsWithTag("Pellet");
-
-            // ============================================
-            // Optional: Update UI here if you implement it
-            // ============================================
-            // if (scoreText != null) scoreText.text = $"Pellets: {eatedPellets}/{totalPellets}";
-
-            // Set totalPellets and eatedPellets
             totalPellets = pellets.Length;
-            eatedPellets = 0;
+            eatenPellets = 0;
 
+            UpdateScoreUI();
             Debug.Log($"Game Started! Pellets to eat: {totalPellets}");
         }
 
@@ -52,13 +56,16 @@ namespace Pacman
         {
             if (isGameOver || isVictory) return;
 
-            // 2. Update State
-            eatedPellets++;
+            eatenPellets++;
+            UpdateScoreUI();
 
-            Debug.Log($"Pellets (consumed/total): {eatedPellets}/{totalPellets}");
+            // PLAY SOUND: Use PlayOneShot so sounds can overlap (waka-waka style)
+            if (sfxSource != null && pelletClip != null)
+            {
+                sfxSource.PlayOneShot(pelletClip);
+            }
 
-            // 3. Check Win Condition
-            if (eatedPellets == totalPellets)
+            if (eatenPellets >= totalPellets)
             {
                 WinGame();
             }
@@ -68,28 +75,40 @@ namespace Pacman
         {
             if (isVictory) return;
 
-            Debug.Log("GAME OVER! The Virus was caught.");
+            Debug.Log("GAME OVER!");
             isGameOver = true;
 
-            //=======================
-            // TODO: Game Over Screen
-            //=======================
+            // Stop Music, Play Death Sound
+            if (musicSource != null) musicSource.Stop();
+            if (sfxSource != null && loseClip != null) sfxSource.PlayOneShot(loseClip);
 
-            // Show Lose UI here...
-            // Time.timeScale = 0; // Pause game
+            if (loseScreen != null) loseScreen.SetActive(true);
         }
 
         private void WinGame()
         {
-            Debug.Log("VICTORY! All pellets consumed.");
+            Debug.Log("VICTORY!");
             isVictory = true;
 
-            //=====================
-            // TODO: Victory Screen
-            //=====================
+            // Stop Music, Play Win Sound
+            if (musicSource != null) musicSource.Stop();
+            if (sfxSource != null && winClip != null) sfxSource.PlayOneShot(winClip);
 
-            // Show Win UI here...
-            // Time.timeScale = 0; // Pause game
+            if (winScreen != null) winScreen.SetActive(true);
+        }
+
+        private void UpdateScoreUI()
+        {
+            if (scoreText != null)
+            {
+                scoreText.text = $"Pellets: {eatenPellets}/{totalPellets}";
+            }
+        }
+
+        public void RestartGame()
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }

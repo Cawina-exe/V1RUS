@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Player_Pacman
+  - Virus
+  - Vaccine
+  - Pellet
   layers:
   - Default
   - TransparentFX
@@ -15,9 +17,9 @@ TagManager:
   - Camera
   - 
   - Minigame
-  - 
-  - 
-  - 
+  - Virus
+  - Wall
+  - Vaccine
   - 
   - 
   - 

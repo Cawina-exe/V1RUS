@@ -6,7 +6,7 @@ using Pacman.Utils;
 namespace Pacman.Agents.KBs
 {
     /// <summary>
-    /// KB for Vaccine Orange (formerly Ghost B).
+    /// KB for Vaccine Blue (formerly Ghost B).
     /// Logic: Optimistic Model-Based Agent using PL to route through the fog of war.
     /// </summary>
     public class KnowledgeBaseB : IKnowledgeBase
@@ -17,6 +17,9 @@ namespace Pacman.Agents.KBs
         private HashSet<Vector2Int> _unknownTiles = new HashSet<Vector2Int>();
         private HashSet<Vector2Int> _junctions = new HashSet<Vector2Int>();
         private HashSet<Vector2Int> _believedPellets = new HashSet<Vector2Int>();
+
+        // NEW: Track goals we tried but couldn't reach to prevent looping
+        private HashSet<Vector2Int> _unreachableGoals = new HashSet<Vector2Int>();
 
         private bool _initialized = false;
 
@@ -50,6 +53,9 @@ namespace Pacman.Agents.KBs
         )
         {
             _myPos = myPos;
+
+            // Clear unreachable cache if we spot the virus (context switch)
+            if (virusPos.HasValue && !_virusVisible) _unreachableGoals.Clear();
 
             if (!_initialized)
             {
@@ -173,7 +179,6 @@ namespace Pacman.Agents.KBs
                 if (_junctions.Contains(_myPos))
                 {
                     // Update Queue
-                    // We just Enqueue. The limit logic handles the overflow.
                     _visitedJunctions.Enqueue(_myPos);
                     while (_visitedJunctions.Count > MAX_VISITED_HISTORY)
                         _visitedJunctions.Dequeue();
@@ -195,39 +200,54 @@ namespace Pacman.Agents.KBs
                 }
             }
 
-            // 3. GOAL SELECTION
-            if (_goal == null)
+            // 3. GOAL SELECTION & RE-SELECTION LOOP (Fix for Getting Stuck)
+            int attempts = 0;
+            // Loop allows us to retry if the picked goal is unreachable (path failure)
+            while ((_goal == null || _currentPath.Count == 0) && attempts < 10)
             {
-                _goal = SelectNewGoal(planningMesh);
-                _currentPath.Clear();
-            }
+                attempts++;
 
-            // 4. PATHFINDING
-            if (_goal.HasValue)
-            {
-                bool needsPath = (_currentPath.Count == 0);
-
-                // If we have a path, check if it's still valid (continuity)
-                if (_currentPath.Count > 0)
+                // If we have no goal, pick one
+                if (_goal == null)
                 {
-                    Vector2Int nextStep = _currentPath[0];
-                    // If next step is not neighbor and not self, path is broken
-                    if (!PathUtils.GetNeighbors(_myPos).Contains(nextStep) && nextStep != _myPos)
-                        needsPath = true;
+                    _goal = SelectNewGoal(planningMesh);
                 }
 
-                if (needsPath)
+                if (_goal.HasValue)
                 {
-                    // Pass OPTIMISTIC mesh to BFS
-                    _currentPath = PathUtils.BfsPathfinder(_myPos, _goal, planningMesh);
+                    // Ensure _currentPath is not null
+                    if (_currentPath == null) _currentPath = new List<Vector2Int>();
 
-                    // BFS returns [start, next, ..., goal]. Remove start.
-                    if (_currentPath != null && _currentPath.Count > 0 && _currentPath[0] == _myPos)
+                    // Try to path to it
+                    // NOTE: If pathfinding fails, BfsPathfinder returns NULL
+                    var newPath = PathUtils.BfsPathfinder(_myPos, _goal, planningMesh);
+
+                    if (newPath != null && newPath.Count > 0)
                     {
-                        _currentPath.RemoveAt(0);
+                        _currentPath = newPath;
+                        if (_currentPath[0] == _myPos) _currentPath.RemoveAt(0); // Pop start
                     }
-
-                    if (_currentPath == null) _goal = null; // Unreachable
+                    else
+                    {
+                        // Path failed! This goal is bad (or unreachable). 
+                        // Mark it so we don't pick it again immediately.
+                        _unreachableGoals.Add(_goal.Value);
+                        _goal = null;
+                    }
+                }
+                else
+                {
+                    // No valid goals found via standard logic?
+                    // Fallback: Pick a random valid neighbor to break paralysis
+                    var neighbors = PathUtils.GetNeighbors(_myPos)
+                                             .Where(n => planningMesh.Contains(n) && !_walls.Contains(n))
+                                             .ToList();
+                    if (neighbors.Count > 0)
+                    {
+                        _goal = neighbors[Random.Range(0, neighbors.Count)];
+                        _currentPath = new List<Vector2Int> { _goal.Value };
+                    }
+                    break; // Exit loop, we forced a move
                 }
             }
 
@@ -240,6 +260,7 @@ namespace Pacman.Agents.KBs
                 if (_walls.Contains(nextStep))
                 {
                     _currentPath.Clear();
+                    _goal = null;
                     return "WAIT";
                 }
 
@@ -251,7 +272,6 @@ namespace Pacman.Agents.KBs
                     else return "WAIT";
                 }
 
-                // Construct a mini-path for the helper
                 return PathUtils.GetMoveFromPath(_myPos, new List<Vector2Int> { _myPos, nextStep });
             }
 
@@ -325,7 +345,8 @@ namespace Pacman.Agents.KBs
             if (_clues.Count > 0) return SelectBestClue();
 
             // Helper for finding nearest
-            bool IsValid(Vector2Int c) => !_walls.Contains(c) && mesh.Contains(c) && c != _myPos;
+            // NEW: Added check for _unreachableGoals
+            bool IsValid(Vector2Int c) => !_walls.Contains(c) && mesh.Contains(c) && c != _myPos && !_unreachableGoals.Contains(c);
 
             // 3. FAR JUNCTIONS (Avoid visited)
             var farJuncs = new HashSet<Vector2Int>();
@@ -351,6 +372,11 @@ namespace Pacman.Agents.KBs
             var nearbyJuncs = new HashSet<Vector2Int>(_junctions.Where(j => j != _myPos && IsValid(j)));
             if (nearbyJuncs.Count > 0)
                 return PathUtils.FindNearestCoord(_myPos, nearbyJuncs, mesh);
+
+            // 6. NEW: RANDOM SAFE TILE (Last Resort to break loops)
+            // If everything else failed (or was unreachable), pick ANY valid safe tile.
+            var safeList = _safeTiles.Where(s => IsValid(s)).ToList();
+            if (safeList.Count > 0) return safeList[Random.Range(0, safeList.Count)];
 
             return null;
         }
