@@ -1,5 +1,7 @@
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Virus : MonoBehaviour
 {
@@ -69,7 +71,7 @@ public class Virus : MonoBehaviour
 
     void Derrota()
     {
-
+        SceneManager.LoadScene("Derrota");
     }
 
     public void PerderDinheiro(float money)

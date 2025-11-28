@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 588f2b281b343eb458acab27a522c9b7, type: 3}
-  m_Name: Sound
+  m_Name: Water
   m_EditorClassIdentifier: Assembly-CSharp::WorldData
-  habitantes: 0
-  defesa: 0
-  cura: 0
+  habitantes: 200000
+  defesa: 5
+  cura: 5

@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WorldsFunction : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class WorldsFunction : MonoBehaviour
     [SerializeField] private WorldData data;
     [SerializeField] private TMP_Text defenseText;
     [SerializeField] private TMP_Text curaText;
+    [SerializeField] private Virus statsVirus;
 
     private float timer5sec = 0f;
     private float timer10sec = 0f;
@@ -25,9 +27,36 @@ public class WorldsFunction : MonoBehaviour
     public bool statsCura = false;
     public bool statsDefesa = false;
 
+    public int planetaIndexAtual;
+
 
     void Start()
     {
+        SaveData save = SaveSystem.Load();
+
+        int planetaIndex = -1;
+
+        for (int i = 0; i < save.PlanetaAtivado.Count; i++)
+        {
+            if (save.PlanetaAtivado[i])
+            {
+                planetaIndex = i;
+                break;
+            }
+        }
+
+        if (planetaIndex == -1)
+            planetaIndex = 0;
+
+        if (planetaIndex >= dataPossiveis.Count)
+        {
+            return;
+        }
+
+        planetaIndexAtual = planetaIndex;
+
+        data = dataPossiveis[planetaIndex];
+
         worldHabitantes = data.habitantes;
 
         defesaGain = data.defesa;
@@ -99,7 +128,13 @@ public class WorldsFunction : MonoBehaviour
 
     public void WinVirus()
     {
+        SaveData save = SaveSystem.Load();
 
+        save.Pontos[planetaIndexAtual] = statsVirus.virusPontos;
+
+        SaveSystem.Save(save);
+
+        SceneManager.LoadScene("Vitoria");
     }
 
     public void change()

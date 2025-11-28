@@ -1157,9 +1157,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b8178f84629bb3478c51cfd9315d92e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WorldsFunction
+  dataPossiveis:
+  - {fileID: 11400000, guid: c09656ac75458fd429883a55dad179e8, type: 2}
+  - {fileID: 11400000, guid: 9e82b37160609ea468d62864abc1fda8, type: 2}
+  - {fileID: 11400000, guid: fa355ecccd1065540a039c603f8a7620, type: 2}
   data: {fileID: 11400000, guid: c09656ac75458fd429883a55dad179e8, type: 2}
   defenseText: {fileID: 1438194277}
   curaText: {fileID: 1026715417}
+  statsVirus: {fileID: 451492747}
   defesaAcumulada: 0
   defesaGain: 0
   curaAcumulada: 0

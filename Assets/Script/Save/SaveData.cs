@@ -16,7 +16,7 @@ public class SaveData
     public SaveData()
     {
         PlanetaAtivado = new List<bool> { false, false, false };
-        Planetas = new List<string> { "Earth", "Sound", "Technology" };
+        Planetas = new List<string> { "Earth", "Water", "Technology" };
         Pontos = new List<float> { 0f, 0f, 0f };
 
         som = 1.0f; 

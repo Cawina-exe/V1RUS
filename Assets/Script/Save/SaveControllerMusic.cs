@@ -2,15 +2,12 @@ using UnityEngine;
 
 public class SaveControllerMusic : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private SaveData currentData;
+    private void Start()
     {
-        
+        currentData = SaveSystem.Load();
+
+        AudioListener.volume = currentData.som;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
