@@ -1,9 +1,11 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
 public class WorldsFunction : MonoBehaviour
 {
+    [SerializeField] private List<WorldData> dataPossiveis;
     [SerializeField] private WorldData data;
     [SerializeField] private TMP_Text defenseText;
     [SerializeField] private TMP_Text curaText;

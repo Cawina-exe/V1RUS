@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SaveSystem
+public class SaveSystem : MonoBehaviour 
 {
     private const string SAVE_KEY = "GameSave";
 

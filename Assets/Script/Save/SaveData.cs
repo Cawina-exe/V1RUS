@@ -4,7 +4,8 @@ using UnityEngine;
 [System.Serializable] 
 public class SaveData
 {
-    public List<float> Planeta;
+    public List<bool> PlanetaAtivado;
+    public List<string> Planetas;
     public List<float> Pontos;
     public List<bool> FaseConcluida;
 
@@ -14,9 +15,9 @@ public class SaveData
     
     public SaveData()
     {
-        Planeta = new List<float> { 1f, 2f, 3f };
+        PlanetaAtivado = new List<bool> { false, false, false };
+        Planetas = new List<string> { "Earth", "Sound", "Technology" };
         Pontos = new List<float> { 0f, 0f, 0f };
-        FaseConcluida = new List<bool> { false, false, false };
 
         som = 1.0f; 
     }

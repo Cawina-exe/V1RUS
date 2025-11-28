@@ -63,18 +63,18 @@ public class MainMenu : MonoBehaviour
         mainMenuUI.SetActive(true);
     }
 
- 
+
 
     public void SetVolume(float volume)
     {
-        
         AudioListener.volume = volume;
 
-      
         currentData.som = volume;
+
+        SaveSystem.Save(currentData);
     }
 
-   
+
 
     public void OpenMainMenu()
     {
