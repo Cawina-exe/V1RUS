@@ -62,8 +62,6 @@ public class WorldsFunction : MonoBehaviour
         defesaGain = data.defesa;
         curaGain = data.cura;
 
-        defenseText.text = "0";
-        curaText.text = "0";
     }
 
     void Update()

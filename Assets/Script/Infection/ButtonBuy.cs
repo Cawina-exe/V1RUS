@@ -1,36 +1,24 @@
 using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ButtonBuy : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public enum ActionTypeOne
-    {
-        AumentarValor,
-        DiminuirValor,
-        MultiplicarValor,
-        Dividir
-    }
+    public enum ActionTypeOne { AumentarValor, DiminuirValor, MultiplicarValor, Dividir }
+    public enum ActionTypeTwo { virus, planetaDefesa, planetaCura }
 
-    public enum ActionTypeTwo
-    {
-        virus,
-        planetaDefesa,
-        planetaCura
-    }
+    [Header("Configuração de Tipo")]
+
+    [SerializeField] private bool bloquearAposCompra = false;
 
     [Header("Ação deste botão")]
     [SerializeField] private ActionTypeOne acao;
-
     [Header("Para quem é direcionado")]
     [SerializeField] private ActionTypeTwo quem;
-
     [Header("Local da descrição")]
     [SerializeField] private TextMeshProUGUI text;
-
     [Header("Valores configuráveis")]
     [SerializeField] private float valor;
     [SerializeField] private float preco = 0;
@@ -39,121 +27,86 @@ public class ButtonBuy : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private bool utilizado = false;
     private WorldsFunction statsWorld;
     private Virus statsVirus;
+    private Button myButton;
 
     void Start()
     {
         statsVirus = GameObject.Find("EventSystem").GetComponent<Virus>();
         statsWorld = GameObject.Find("EventSystem").GetComponent<WorldsFunction>();
-        GetComponent<Button>().onClick.AddListener(Executar);
-    }
 
-    public void Update()
-    {
-        if (utilizado == true)
+        myButton = GetComponent<Button>();
+        myButton.onClick.AddListener(Executar);
+
+       
+        if (bloquearAposCompra && utilizado)
         {
-            GetComponent<Button>().interactable = false;
+            myButton.interactable = false;
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        text.text = descricao + "\nPreço: " + preco.ToString("F2");
+        
+        if ((!utilizado || !bloquearAposCompra) && text != null)
+        {
+            text.text = descricao + "\nPreço: " + preco.ToString("F2");
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        text.text = "";
+        if (text != null) text.text = "";
     }
 
     public void Executar()
     {
+       
+        if (bloquearAposCompra && utilizado) return;
+
         if (statsVirus.virusMoney >= preco)
         {
-            statsVirus.virusPontos += preco/3f;
-            statsVirus.VirusPontosText.text = statsVirus.virusPontos.ToString();
+            statsVirus.virusPontos += preco / 3f;
+            if (statsVirus.VirusPontosText != null)
+                statsVirus.VirusPontosText.text = statsVirus.virusPontos.ToString();
+
             statsVirus.PerderDinheiro(preco);
+
+           
             switch (quem)
             {
                 case ActionTypeTwo.planetaDefesa:
-                    switch (acao)
-                    {
-
-                        case ActionTypeOne.AumentarValor:
-                            statsWorld.defesaGain += valor;
-                            utilizado = true;
-                            break;
-
-                        case ActionTypeOne.DiminuirValor:
-                            statsWorld.defesaGain -= valor;
-                            utilizado = true;
-                            break;
-
-                        case ActionTypeOne.MultiplicarValor:
-                            statsWorld.defesaGain *= valor;
-                            utilizado = true;
-                            break;
-
-                        case ActionTypeOne.Dividir:
-                            statsWorld.defesaGain /= valor;
-                            utilizado = true;
-                            break;
-                    }
+                    ApplyAction(ref statsWorld.defesaGain);
                     break;
-
                 case ActionTypeTwo.planetaCura:
-                    switch (acao)
-                    {
-
-                        case ActionTypeOne.AumentarValor:
-                            statsWorld.curaGain += valor;
-                            utilizado = true;
-                            break;
-
-                        case ActionTypeOne.DiminuirValor:
-                            statsWorld.curaGain -= valor;
-                            utilizado = true;
-                            break;
-
-                        case ActionTypeOne.MultiplicarValor:
-                            statsWorld.curaGain *= valor;
-                            utilizado = true;
-                            break;
-
-                        case ActionTypeOne.Dividir:
-                            statsWorld.curaGain /= valor;
-                            utilizado = true;
-                            break;
-                    }
+                    ApplyAction(ref statsWorld.curaGain);
                     break;
-
                 case ActionTypeTwo.virus:
-                    switch (acao)
-                    {
-
-                        case ActionTypeOne.AumentarValor:
-                            statsVirus.virusGain += valor;
-                            utilizado = true;
-                            break;
-
-                        case ActionTypeOne.DiminuirValor:
-                            statsVirus.virusGain -= valor;
-                            utilizado = true;
-                            break;
-
-                        case ActionTypeOne.MultiplicarValor:
-                            statsVirus.virusGain *= valor;
-                            utilizado = true;
-                            break;
-
-                        case ActionTypeOne.Dividir:
-                            statsVirus.virusGain /= valor;
-                            utilizado = true;
-                            break;
-                    }
+                    ApplyAction(ref statsVirus.virusGain);
                     break;
             }
+
             statsWorld.change();
             statsVirus.change();
+
+          
+            if (bloquearAposCompra)
+            {
+                utilizado = true;
+                myButton.interactable = false;
+                if (text != null) text.text = "";
+            }
+        }
+    }
+
+  
+    private void ApplyAction(ref float targetValue)
+    {
+        switch (acao)
+        {
+            case ActionTypeOne.AumentarValor: targetValue += valor; break;
+            case ActionTypeOne.DiminuirValor: targetValue -= valor; break;
+            case ActionTypeOne.MultiplicarValor: targetValue *= valor; break;
+            case ActionTypeOne.Dividir: targetValue /= valor; break;
         }
     }
 }

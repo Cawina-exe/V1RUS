@@ -15,6 +15,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Fase.unity
     guid: 08304075bc5860648a2cadea90361e6a
   - enabled: 1
+    path: Assets/Scenes/Osu_Minigame.unity
+    guid: 967226a1f010692448e772d90be12cbe
+  - enabled: 1
+    path: Assets/Scenes/PacMan_Minigame.unity
+    guid: 331413e8d49822442b1b5a57eb65d332
+  - enabled: 1
     path: Assets/Scenes/Vitoria.unity
     guid: 9ec277f2ef5609948b6e69b7932a5302
   - enabled: 1
