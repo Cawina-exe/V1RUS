@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f1e8c5538352004fbf5acfb3b901f52, type: 3}
   m_Name: Op3
   m_EditorClassIdentifier: Assembly-CSharp::OptionsData
-  Titulo: C
-  valorParaOVirus: 3
-  virusAction: 0
-  descricaoVirus: C
+  Titulo: Injection
+  valorParaOVirus: 2
+  virusAction: 3
+  descricaoVirus: Divdes the current value of the infection
   valorParaOPlaneta: 3
   planetaAction: 0
   planetaTipe: 0
-  descricaoPlaneta: C
+  descricaoPlaneta: Shields up! The planet is stronger

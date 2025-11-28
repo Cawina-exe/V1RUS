@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f1e8c5538352004fbf5acfb3b901f52, type: 3}
   m_Name: Op1
   m_EditorClassIdentifier: Assembly-CSharp::OptionsData
-  Titulo: A
-  valorParaOVirus: 1
-  virusAction: 0
-  descricaoVirus: A
+  Titulo: Infection wave
+  valorParaOVirus: 2
+  virusAction: 2
+  descricaoVirus: Multiplies the current value of the infection
   valorParaOPlaneta: 1
-  planetaAction: 0
+  planetaAction: 1
   planetaTipe: 0
-  descricaoPlaneta: A
+  descricaoPlaneta: Loss of defences

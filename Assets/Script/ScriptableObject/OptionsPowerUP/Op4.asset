@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f1e8c5538352004fbf5acfb3b901f52, type: 3}
   m_Name: Op4
   m_EditorClassIdentifier: Assembly-CSharp::OptionsData
-  Titulo: D
-  valorParaOVirus: 4
-  virusAction: 0
-  descricaoVirus: D
-  valorParaOPlaneta: 4
-  planetaAction: 0
-  planetaTipe: 1
-  descricaoPlaneta: D
+  Titulo: Cataclysm
+  valorParaOVirus: 5
+  virusAction: 2
+  descricaoVirus: Multiplies the infection by x5
+  valorParaOPlaneta: 2
+  planetaAction: 3
+  planetaTipe: 0
+  descricaoPlaneta: "Shields down, you can\xB4t run from the infection."

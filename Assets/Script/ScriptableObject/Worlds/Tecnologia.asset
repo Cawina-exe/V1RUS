@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 588f2b281b343eb458acab27a522c9b7, type: 3}
-  m_Name: Tecnologi
+  m_Name: Tecnologia
   m_EditorClassIdentifier: Assembly-CSharp::WorldData
-  habitantes: 300000
-  defesa: 5
-  cura: 5
+  habitantes: 7000000
+  defesa: 10
+  cura: 20

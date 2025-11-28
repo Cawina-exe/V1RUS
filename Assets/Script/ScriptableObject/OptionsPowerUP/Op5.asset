@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f1e8c5538352004fbf5acfb3b901f52, type: 3}
-  m_Name: Op2
+  m_Name: Op5
   m_EditorClassIdentifier: Assembly-CSharp::OptionsData
-  Titulo: Extermination
-  valorParaOVirus: 10
-  virusAction: 0
-  descricaoVirus: Boosts the consumption of the virus by +10
-  valorParaOPlaneta: 2
+  Titulo: Tear Down
+  valorParaOVirus: 5
+  virusAction: 1
+  descricaoVirus: Your infection is loosing strenght by -5
+  valorParaOPlaneta: 5
   planetaAction: 0
   planetaTipe: 1
-  descricaoPlaneta: 'Heals infected population '
+  descricaoPlaneta: Heal the population by +5

@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f1e8c5538352004fbf5acfb3b901f52, type: 3}
-  m_Name: Op2
+  m_Name: Op7
   m_EditorClassIdentifier: Assembly-CSharp::OptionsData
-  Titulo: Extermination
+  Titulo: 'The Prayer '
   valorParaOVirus: 10
-  virusAction: 0
-  descricaoVirus: Boosts the consumption of the virus by +10
-  valorParaOPlaneta: 2
-  planetaAction: 0
+  virusAction: 5
+  descricaoVirus: Nerfs by -10 the gains
+  valorParaOPlaneta: 10
+  planetaAction: 4
   planetaTipe: 1
-  descricaoPlaneta: 'Heals infected population '
+  descricaoPlaneta: Boosts by +10 the gains

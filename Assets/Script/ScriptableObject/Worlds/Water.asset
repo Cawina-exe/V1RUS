@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 588f2b281b343eb458acab27a522c9b7, type: 3}
   m_Name: Water
   m_EditorClassIdentifier: Assembly-CSharp::WorldData
-  habitantes: 200000
-  defesa: 5
-  cura: 5
+  habitantes: 5000000
+  defesa: 10
+  cura: 7
