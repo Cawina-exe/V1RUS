@@ -6,8 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class WorldsFunction : MonoBehaviour
 {
+    [Header("Data Settings")]
     [SerializeField] private List<WorldData> dataPossiveis;
     [SerializeField] private WorldData data;
+
+    [Header("Visual Settings")] 
+  
+    [SerializeField] private List<GameObject> planetPrefabs;
+
+    [SerializeField] private Transform spawnPoint;
+    private GameObject currentPlanetInstance; 
+
+    [Header("UI & Stats")]
     [SerializeField] private TMP_Text defenseText;
     [SerializeField] private TMP_Text curaText;
     [SerializeField] private Virus statsVirus;
@@ -29,13 +39,13 @@ public class WorldsFunction : MonoBehaviour
 
     public int planetaIndexAtual;
 
-
     void Start()
     {
         SaveData save = SaveSystem.Load();
 
         int planetaIndex = -1;
 
+ 
         for (int i = 0; i < save.PlanetaAtivado.Count; i++)
         {
             if (save.PlanetaAtivado[i])
@@ -45,23 +55,51 @@ public class WorldsFunction : MonoBehaviour
             }
         }
 
+  
         if (planetaIndex == -1)
             planetaIndex = 0;
 
+   
         if (planetaIndex >= dataPossiveis.Count)
         {
+            Debug.LogError("Error: Index is larger than Data list!");
             return;
         }
 
         planetaIndexAtual = planetaIndex;
-
         data = dataPossiveis[planetaIndex];
 
-        worldHabitantes = data.habitantes;
+        
+        SpawnPlanet(planetaIndex);
+      
 
+        worldHabitantes = data.habitantes;
         defesaGain = data.defesa;
         curaGain = data.cura;
+    }
 
+  
+    void SpawnPlanet(int index)
+    {
+    
+        if (index >= planetPrefabs.Count)
+        {
+            Debug.LogError("Error: You forgot to add the Prefab to the list in the Inspector!");
+            return;
+        }
+
+        if (currentPlanetInstance != null)
+        {
+            Destroy(currentPlanetInstance);
+        }
+
+
+        Vector3 pos = (spawnPoint != null) ? spawnPoint.position : Vector3.zero;
+        Quaternion rot = (spawnPoint != null) ? spawnPoint.rotation : Quaternion.identity;
+
+        currentPlanetInstance = Instantiate(planetPrefabs[index], pos, rot);
+
+     
     }
 
     void Update()
@@ -81,7 +119,6 @@ public class WorldsFunction : MonoBehaviour
         {
             statsCura = false;
             curaText.text = "0";
-
         }
 
         timer5sec += Time.deltaTime;
@@ -127,11 +164,8 @@ public class WorldsFunction : MonoBehaviour
     public void WinVirus()
     {
         SaveData save = SaveSystem.Load();
-
         save.Pontos[planetaIndexAtual] = statsVirus.virusPontos;
-
         SaveSystem.Save(save);
-
         SceneManager.LoadScene("Vitoria");
     }
 
@@ -140,5 +174,4 @@ public class WorldsFunction : MonoBehaviour
         curaText.text = curaAcumulada.ToString();
         defenseText.text = defesaAcumulada.ToString();
     }
-
 }
