@@ -12,11 +12,13 @@ public class GameManager : MonoBehaviour
     public GameObject winScreen;
     public GameObject lossScreen;
 
-    
     [Header("Audio Settings")]
-    public AudioSource musicSource; 
-    public AudioSource sfxSource;  
-    public AudioClip clickSound;   
+    public AudioSource musicSource;
+    public AudioSource sfxSource;
+    public AudioClip clickSound;
+
+    public AudioClip winSound;  
+    public AudioClip loseSound; 
 
     [Header("Game Setup")]
     public GameObject circlePrefab;
@@ -71,7 +73,6 @@ public class GameManager : MonoBehaviour
         lossScreen.SetActive(false);
         UpdateUI();
 
-      
         if (musicSource != null)
         {
             musicSource.Play();
@@ -80,12 +81,10 @@ public class GameManager : MonoBehaviour
         SpawnNextCircle();
     }
 
-   
     public void PlayClickSound()
     {
         if (sfxSource != null && clickSound != null)
         {
-         
             sfxSource.PlayOneShot(clickSound);
         }
     }
@@ -129,7 +128,6 @@ public class GameManager : MonoBehaviour
 
         if (numberClicked == currentTargetNumber)
         {
-            
             PlayClickSound();
 
             circlesClicked++;
@@ -161,11 +159,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+ 
     void EndGame(bool clickedAllCircles)
     {
         gameIsActive = false;
 
-   
+     
         if (musicSource != null)
         {
             musicSource.Stop();
@@ -177,17 +176,36 @@ public class GameManager : MonoBehaviour
             Destroy(circle.gameObject);
         }
 
+        bool playerWon = false;
+
         if (clickedAllCircles)
         {
-            winScreen.SetActive(true);
+            playerWon = true;
         }
-        else if (circlesClicked >= winScoreRequirement && !clickedAllCircles)
+        else if (circlesClicked >= winScoreRequirement && currentFails < maxFails)
+        {
+  
+            playerWon = true;
+        }
+
+   
+        if (playerWon)
         {
             winScreen.SetActive(true);
+      
+            if (sfxSource != null && winSound != null)
+            {
+                sfxSource.PlayOneShot(winSound);
+            }
         }
         else
         {
             lossScreen.SetActive(true);
+         
+            if (sfxSource != null && loseSound != null)
+            {
+                sfxSource.PlayOneShot(loseSound);
+            }
         }
     }
 
