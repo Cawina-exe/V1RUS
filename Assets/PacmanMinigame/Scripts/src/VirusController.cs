@@ -123,9 +123,9 @@ namespace Pacman.Player
             if (collision.gameObject.CompareTag("Vaccine"))
             {
                 Debug.Log("HIT VACCINE!"); 
-                if (Pacman.GameManager.Instance != null)
+                if (Pacman.PacmanMiniGame.Instance != null)
                 {
-                    Pacman.GameManager.Instance.HandleDeath();
+                    Pacman.PacmanMiniGame.Instance.HandleDeath();
                 }
             }
         }
@@ -136,9 +136,9 @@ namespace Pacman.Player
            
             if (other.CompareTag("Pellet"))
             {
-                if (Pacman.GameManager.Instance != null)
+                if (Pacman.PacmanMiniGame.Instance != null)
                 {
-                    Pacman.GameManager.Instance.PelletEaten(1);
+                    Pacman.PacmanMiniGame.Instance.PelletEaten(1);
                 }
                 Destroy(other.gameObject);
             }

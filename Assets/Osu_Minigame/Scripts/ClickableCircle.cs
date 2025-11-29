@@ -4,7 +4,7 @@ using UnityEngine;
 public class ClickableCircle : MonoBehaviour
 {
     public int circleNumber; 
-    private GameManager gameManager;
+    private OsuMiniGame gameManager;
     private bool isClicked = false;
 
     
@@ -21,7 +21,7 @@ public class ClickableCircle : MonoBehaviour
         }
     }
 
-    public void Initialize(GameManager manager, int number)
+    public void Initialize(OsuMiniGame manager, int number)
     {
         gameManager = manager;
         circleNumber = number;

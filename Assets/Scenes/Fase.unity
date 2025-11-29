@@ -2929,6 +2929,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95b0c96df199e3a438679f17081722dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiniGamesManager
+  osuSceneName: Osu_Minigame
+  pacmanSceneName: PacMan_Minigame
 --- !u!1 &452519799
 GameObject:
   m_ObjectHideFlags: 0

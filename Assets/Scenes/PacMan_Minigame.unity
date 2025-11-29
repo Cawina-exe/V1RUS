@@ -128,7 +128,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7470503}
-  - component: {fileID: 7470502}
   - component: {fileID: 7470504}
   m_Layer: 0
   m_Name: GameManager
@@ -137,30 +136,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &7470502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7470501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa8d1c85159f4584fa38dfb891541b73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Pacman.GameManager
-  eatenPellets: 0
-  totalPellets: 0
-  isGameOver: 0
-  isVictory: 0
-  scoreText: {fileID: 389661907}
-  winScreen: {fileID: 1299560379}
-  loseScreen: {fileID: 1561729470}
-  musicSource: {fileID: 1798422988}
-  sfxSource: {fileID: 7470504}
-  pelletClip: {fileID: 8300000, guid: 16cd8237c2f541245a51ea01e5aa36d4, type: 3}
-  winClip: {fileID: 8300000, guid: da4e57fda3acdbf49ae4f2f5e5cf7b3c, type: 3}
-  loseClip: {fileID: 8300000, guid: b956a710fa50ac240bcd4c7dceb49395, type: 3}
 --- !u!4 &7470503
 Transform:
   m_ObjectHideFlags: 0
@@ -2812,6 +2787,7 @@ GameObject:
   - component: {fileID: 652677733}
   - component: {fileID: 652677732}
   - component: {fileID: 652677731}
+  - component: {fileID: 652677734}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -2880,6 +2856,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &652677734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 652677730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da3439be1864124680b4e267a1f3f25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pacman.PacmanMiniGame
+  eatenPellets: 0
+  totalPellets: 0
+  isGameOver: 0
+  isVictory: 0
+  scoreText: {fileID: 389661907}
+  winScreen: {fileID: 1299560379}
+  loseScreen: {fileID: 1561729470}
+  musicSource: {fileID: 1798422988}
+  sfxSource: {fileID: 7470504}
+  pelletClip: {fileID: 8300000, guid: 16cd8237c2f541245a51ea01e5aa36d4, type: 3}
+  winClip: {fileID: 8300000, guid: da4e57fda3acdbf49ae4f2f5e5cf7b3c, type: 3}
+  loseClip: {fileID: 8300000, guid: b956a710fa50ac240bcd4c7dceb49395, type: 3}
 --- !u!1 &661100675
 GameObject:
   m_ObjectHideFlags: 0

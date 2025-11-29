@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class BackgroundClickDetector : MonoBehaviour
 {
-    private GameManager gameManager;
+    private OsuMiniGame gameManager;
 
     void Start()
     {
        
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindObjectOfType<OsuMiniGame>();
     }
 
  

@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class OsuMiniGame : MonoBehaviour
 {
     [Header("UI Elements")]
     public TextMeshProUGUI timerText;
@@ -17,8 +18,8 @@ public class GameManager : MonoBehaviour
     public AudioSource sfxSource;
     public AudioClip clickSound;
 
-    public AudioClip winSound;  
-    public AudioClip loseSound; 
+    public AudioClip winSound;
+    public AudioClip loseSound;
 
     [Header("Game Setup")]
     public GameObject circlePrefab;
@@ -37,6 +38,8 @@ public class GameManager : MonoBehaviour
     private float currentTime;
     private bool gameIsActive = false;
 
+
+ 
     void Start()
     {
         if (circlesLayerMask == 0)
@@ -69,8 +72,8 @@ public class GameManager : MonoBehaviour
         currentFails = 0;
         currentTime = timeLimit;
 
-        winScreen.SetActive(false);
-        lossScreen.SetActive(false);
+        if (winScreen) winScreen.SetActive(false);
+        if (lossScreen) lossScreen.SetActive(false);
         UpdateUI();
 
         if (musicSource != null)
@@ -118,6 +121,7 @@ public class GameManager : MonoBehaviour
         if (spotIsClear)
         {
             GameObject circleGO = Instantiate(circlePrefab, spawnPos, Quaternion.identity);
+         
             circleGO.GetComponent<ClickableCircle>().Initialize(this, currentTargetNumber);
         }
     }
@@ -159,17 +163,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
- 
+
     void EndGame(bool clickedAllCircles)
     {
         gameIsActive = false;
 
-     
         if (musicSource != null)
         {
             musicSource.Stop();
         }
 
+      
         ClickableCircle circle = FindObjectOfType<ClickableCircle>();
         if (circle != null)
         {
@@ -184,15 +188,13 @@ public class GameManager : MonoBehaviour
         }
         else if (circlesClicked >= winScoreRequirement && currentFails < maxFails)
         {
-  
             playerWon = true;
         }
 
-   
+
         if (playerWon)
         {
-            winScreen.SetActive(true);
-      
+            if (winScreen) winScreen.SetActive(true);
             if (sfxSource != null && winSound != null)
             {
                 sfxSource.PlayOneShot(winSound);
@@ -200,21 +202,28 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            lossScreen.SetActive(true);
-         
+            if (lossScreen) lossScreen.SetActive(true);
             if (sfxSource != null && loseSound != null)
             {
                 sfxSource.PlayOneShot(loseSound);
             }
         }
+
+   
+        Invoke("CloseMiniGame", 3f);
+    }
+
+  
+    private void CloseMiniGame()
+    {
+      
+        SceneManager.UnloadSceneAsync(gameObject.scene);
     }
 
     void UpdateUI()
     {
-        timerText.text = "Time: " + currentTime.ToString("F1");
-        scoreText.text = "Score: " + circlesClicked + " / " + totalCirclesToSpawn;
-        failText.text = "Fails: " + currentFails + " / " + maxFails;
+        if (timerText) timerText.text = "Time: " + currentTime.ToString("F1");
+        if (scoreText) scoreText.text = "Score: " + circlesClicked + " / " + totalCirclesToSpawn;
+        if (failText) failText.text = "Fails: " + currentFails + " / " + maxFails;
     }
 }
-//Lógicas em falta: Butão de voltar para o jogo após perder o minijogo e Butão de receber o buff depois de ganhar o minijogo
-//Falta o UI ( Imagens e sprites), a Fonte do texto está implementada

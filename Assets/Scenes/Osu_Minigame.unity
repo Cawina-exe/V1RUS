@@ -251,6 +251,7 @@ GameObject:
   - component: {fileID: 81311451}
   - component: {fileID: 81311450}
   - component: {fileID: 81311449}
+  - component: {fileID: 81311452}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -319,6 +320,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &81311452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81311448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 417ef76384ec3ec4eb0cc469c16a56b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OsuMiniGame
+  timerText: {fileID: 247722432}
+  scoreText: {fileID: 1362388616}
+  failText: {fileID: 1615855872}
+  winScreen: {fileID: 283998103}
+  lossScreen: {fileID: 165338702}
+  musicSource: {fileID: 1665712910}
+  sfxSource: {fileID: 1665712910}
+  clickSound: {fileID: 8300000, guid: a8f3c67c32b196e47a10bb54471ab484, type: 3}
+  winSound: {fileID: 8300000, guid: f4eac686c408d834bab28878b3459bac, type: 3}
+  loseSound: {fileID: 8300000, guid: 22b6c6460c9508245bde6eace4498f17, type: 3}
+  circlePrefab: {fileID: 2331779916270204980, guid: 4494f75990d25994b9fde07dbd437585, type: 3}
+  circleRadius: 1
+  circlesLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  timeLimit: 30
+  totalCirclesToSpawn: 20
+  winScoreRequirement: 17
+  maxFails: 3
 --- !u!1 &119426745
 GameObject:
   m_ObjectHideFlags: 0
@@ -1764,7 +1796,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1665712908}
-  - component: {fileID: 1665712907}
   - component: {fileID: 1665712910}
   - component: {fileID: 1665712909}
   m_Layer: 0
@@ -1774,37 +1805,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1665712907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1665712906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02b4d30b97553c2468d2b5cfab40fcc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  timerText: {fileID: 247722432}
-  scoreText: {fileID: 1362388616}
-  failText: {fileID: 1615855872}
-  winScreen: {fileID: 283998103}
-  lossScreen: {fileID: 165338702}
-  musicSource: {fileID: 1665712910}
-  sfxSource: {fileID: 1665712909}
-  clickSound: {fileID: 8300000, guid: a8f3c67c32b196e47a10bb54471ab484, type: 3}
-  winSound: {fileID: 8300000, guid: f4eac686c408d834bab28878b3459bac, type: 3}
-  loseSound: {fileID: 8300000, guid: 22b6c6460c9508245bde6eace4498f17, type: 3}
-  circlePrefab: {fileID: 2331779916270204980, guid: 4494f75990d25994b9fde07dbd437585, type: 3}
-  circleRadius: 2
-  circlesLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  timeLimit: 20
-  totalCirclesToSpawn: 30
-  winScoreRequirement: 27
-  maxFails: 3
 --- !u!4 &1665712908
 Transform:
   m_ObjectHideFlags: 0

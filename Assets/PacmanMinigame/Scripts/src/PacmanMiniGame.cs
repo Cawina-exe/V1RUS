@@ -4,9 +4,9 @@ using TMPro;
 
 namespace Pacman
 {
-    public class GameManager : MonoBehaviour
+    public class PacmanMiniGame : MonoBehaviour
     {
-        public static GameManager Instance { get; private set; }
+        public static PacmanMiniGame Instance { get; private set; }
 
         [Header("Game State")]
         public int eatenPellets = 0;
@@ -20,12 +20,12 @@ namespace Pacman
         public GameObject loseScreen;
 
         [Header("Audio")]
-        public AudioSource musicSource; 
-        public AudioSource sfxSource;   
+        public AudioSource musicSource;
+        public AudioSource sfxSource;
 
-        public AudioClip pelletClip;    
-        public AudioClip winClip;       
-        public AudioClip loseClip;      
+        public AudioClip pelletClip;
+        public AudioClip winClip;
+        public AudioClip loseClip;
 
         private void Awake()
         {
@@ -37,17 +37,22 @@ namespace Pacman
             Instance = this;
         }
 
+   
         void Start()
         {
-            
             if (sfxSource == null) sfxSource = gameObject.AddComponent<AudioSource>();
 
+    
             GameObject[] pellets = GameObject.FindGameObjectsWithTag("Pellet");
             totalPellets = pellets.Length;
             eatenPellets = 0;
 
+            // Reset Screens
+            if (winScreen != null) winScreen.SetActive(false);
+            if (loseScreen != null) loseScreen.SetActive(false);
+
             UpdateScoreUI();
-            Debug.Log($"Game Started! Pellets to eat: {totalPellets}");
+            Debug.Log($"Pacman Game Started! Pellets to eat: {totalPellets}");
         }
 
         public void PelletEaten(int pointValue)
@@ -57,7 +62,6 @@ namespace Pacman
             eatenPellets++;
             UpdateScoreUI();
 
-          
             if (sfxSource != null && pelletClip != null)
             {
                 sfxSource.PlayOneShot(pelletClip);
@@ -76,11 +80,13 @@ namespace Pacman
             Debug.Log("GAME OVER!");
             isGameOver = true;
 
-          
             if (musicSource != null) musicSource.Stop();
             if (sfxSource != null && loseClip != null) sfxSource.PlayOneShot(loseClip);
 
             if (loseScreen != null) loseScreen.SetActive(true);
+
+      
+            Invoke("CloseMiniGame", 3f);
         }
 
         private void WinGame()
@@ -88,11 +94,20 @@ namespace Pacman
             Debug.Log("VICTORY!");
             isVictory = true;
 
-           
             if (musicSource != null) musicSource.Stop();
             if (sfxSource != null && winClip != null) sfxSource.PlayOneShot(winClip);
 
             if (winScreen != null) winScreen.SetActive(true);
+
+            
+            Invoke("CloseMiniGame", 3f);
+        }
+
+       
+        private void CloseMiniGame()
+        {
+           
+            SceneManager.UnloadSceneAsync(gameObject.scene);
         }
 
         private void UpdateScoreUI()
@@ -101,12 +116,6 @@ namespace Pacman
             {
                 scoreText.text = $"Pellets: {eatenPellets}/{totalPellets}";
             }
-        }
-
-        public void RestartGame()
-        {
-            Time.timeScale = 1;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }
