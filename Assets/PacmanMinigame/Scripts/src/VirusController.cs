@@ -1,5 +1,8 @@
 using UnityEngine;
 using Pacman.Utils;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.VFX;
 
 namespace Pacman.Player
 {
@@ -19,6 +22,9 @@ namespace Pacman.Player
 
         private float _rayDistance = 0.6f;
         public LayerMask wallLayer;
+        
+        [Header("VFXs")]
+        public VisualEffect pelletEatenFX;
 
         void Start()
         {
@@ -139,9 +145,16 @@ namespace Pacman.Player
                 if (Pacman.PacmanMiniGame.Instance != null)
                 {
                     Pacman.PacmanMiniGame.Instance.PelletEaten(1);
+                    pelletEatenFX.Play();
                 }
                 Destroy(other.gameObject);
             }
         }
+
+        //private IEnumerator PelletFX()
+        //{
+        //    yield return new WaitForSeconds(0.4f);
+        //    pelletEatenFX.SetActive(false);
+        //}
     }
 }

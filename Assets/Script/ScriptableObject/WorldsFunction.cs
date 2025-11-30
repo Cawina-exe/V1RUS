@@ -9,13 +9,14 @@ public class WorldsFunction : MonoBehaviour
     [Header("Data Settings")]
     [SerializeField] private List<WorldData> dataPossiveis;
     [SerializeField] private WorldData data;
+    public WorldData Data { get { return data; } }
 
     [Header("Visual Settings")] 
   
     [SerializeField] private List<GameObject> planetPrefabs;
 
     [SerializeField] private Transform spawnPoint;
-    private GameObject currentPlanetInstance; 
+    [SerializeField] private GameObject currentPlanetInstance; 
 
     [Header("UI & Stats")]
     [SerializeField] private TMP_Text defenseText;
@@ -123,11 +124,13 @@ public class WorldsFunction : MonoBehaviour
             statsCura = false;
             curaText.text = "0";
         }
-
+        
+        
+        
         timer5sec += Time.deltaTime;
         timer10sec += Time.deltaTime;
         timer1min += Time.deltaTime;
-
+        
         if (timer5sec >= 5f)
         {
             if (statsCura)

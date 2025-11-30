@@ -11,7 +11,11 @@ public class Virus : MonoBehaviour
     public float virusGain = 1;
     private float timer1sec = 0f;
     private bool stateVirus = false;
-
+    
+    [Header("Virus Shaders")]
+    [SerializeField] private Material virusMaterial;
+    [SerializeField] private Material techVirusMaterial;
+    
     [SerializeField] private TMP_Text HabitantesText;
     [SerializeField] private TMP_Text VirusPowerText;
     [SerializeField] private TMP_Text VirusMoneyText;
@@ -59,10 +63,12 @@ public class Virus : MonoBehaviour
         else if (virusPower - statsWorld.defesaAcumulada > 0)
         {
             statsWorld.worldHabitantes = statsWorld.worldHabitantes + statsWorld.defesaAcumulada - virusPower;
+            UpdateVirusShader();
         }
         else
         {
             statsWorld.worldHabitantes = statsWorld.worldHabitantes - 1;
+            UpdateVirusShader();
         }
 
         VirusPowerText.text = virusPower.ToString();
@@ -84,6 +90,18 @@ public class Virus : MonoBehaviour
     {
         VirusPowerText.text = virusPower.ToString();
         VirusMoneyText.text = virusMoney.ToString() + "$";
+    }
+
+    public void UpdateVirusShader()
+    {
+        float totalPopulation = statsWorld.Data.habitantes;
+        float currentPopulation = statsWorld.worldHabitantes; 
+        
+        float populationPercentage = (totalPopulation / currentPopulation) - 1;
+        Mathf.Clamp(populationPercentage, 0, 1);
+        Debug.Log($"Current Percentage: {populationPercentage}");
+        virusMaterial.SetFloat("_VirusPercentage", populationPercentage);
+        techVirusMaterial.SetFloat("_VirusPercentage", populationPercentage);
     }
 }
 

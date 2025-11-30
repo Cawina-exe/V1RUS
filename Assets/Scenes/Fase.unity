@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 002032726d3104349ba1e06de98fed83, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -2838,6 +2838,7 @@ MonoBehaviour:
   - {fileID: 4619991603690908262, guid: 0c77658f227287b4e88111e7172773ed, type: 3}
   - {fileID: 3852442965702252673, guid: f79550763919911418e1ce47ef937618, type: 3}
   spawnPoint: {fileID: 117156872}
+  currentPlanetInstance: {fileID: 0}
   defenseText: {fileID: 1438194277}
   curaText: {fileID: 1026715417}
   statsVirus: {fileID: 451492747}
@@ -2865,6 +2866,8 @@ MonoBehaviour:
   virusPower: 100
   virusPontos: 11
   virusGain: 10
+  virusMaterial: {fileID: 2100000, guid: 4216c502c93bb974d9cbf8b94c34b8ab, type: 2}
+  techVirusMaterial: {fileID: 2100000, guid: dc647e256863c1e48bf5e7060bcfe822, type: 2}
   HabitantesText: {fileID: 2021440063}
   VirusPowerText: {fileID: 1859404893}
   VirusMoneyText: {fileID: 1382712041}
