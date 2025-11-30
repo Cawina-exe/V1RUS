@@ -99,7 +99,10 @@ namespace Pacman
 
             if (winScreen != null) winScreen.SetActive(true);
 
-            
+            Virus pontos = GameObject.Find("EventSystem").GetComponent<Virus>();
+            pontos.virusPontos += pontos.virusPontos * 0.5f;
+            pontos.VirusPontosText.text = pontos.virusPontos.ToString();
+
             Invoke("CloseMiniGame", 3f);
         }
 

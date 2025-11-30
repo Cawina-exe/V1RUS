@@ -60,18 +60,15 @@ public class MiniGamesManager : MonoBehaviour
     {
         if (currentMiniGameIndex == 0)
         {
-          
-            if (miniGamePopUp != null) miniGamePopUp.StartGame();
+            SceneManager.LoadScene(pacmanSceneName, LoadSceneMode.Additive);
         }
         else if (currentMiniGameIndex == 1)
         {
-         
             SceneManager.LoadScene(osuSceneName, LoadSceneMode.Additive);
         }
         else if (currentMiniGameIndex == 2)
         {
-            
-            SceneManager.LoadScene(pacmanSceneName, LoadSceneMode.Additive);
+            if (miniGamePopUp != null) miniGamePopUp.StartGame();   
         }
     }
 }

@@ -194,6 +194,10 @@ public class OsuMiniGame : MonoBehaviour
 
         if (playerWon)
         {
+            Virus pontos = GameObject.Find("EventSystem").GetComponent<Virus>();
+            pontos.virusPontos += pontos.virusPontos * 0.5f;
+            pontos.VirusPontosText.text = pontos.virusPontos.ToString();
+
             if (winScreen) winScreen.SetActive(true);
             if (sfxSource != null && winSound != null)
             {

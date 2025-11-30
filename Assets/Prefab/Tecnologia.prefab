@@ -277,9 +277,8 @@ GameObject:
   m_Component:
   - component: {fileID: 36160338586562966}
   - component: {fileID: 7502295442004634342}
-  - component: {fileID: 2812960541851649411}
-  - component: {fileID: 888378313724071144}
   - component: {fileID: 9072851800106685063}
+  - component: {fileID: 6070343770284085621}
   m_Layer: 0
   m_Name: Tecnologia
   m_TagString: Untagged
@@ -324,38 +323,6 @@ MonoBehaviour:
   sun: {fileID: 0}
   orbitSpeed: 20
   rotationSpeed: 20
---- !u!114 &2812960541851649411
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3852442965702252673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 392e5052a6708564583a78ab7c314476, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AtivarJogo
-  targetObject: {fileID: 0}
-  fase: 2
-  toggle: 0
-  fasePainelController: {fileID: 0}
---- !u!114 &888378313724071144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3852442965702252673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37c86a63b45c5444c85d8402021026eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlanetHover
-  planetName: Technology
-  verticalOffset: 1
-  labelObject: {fileID: 0}
-  labelText: {fileID: 0}
 --- !u!135 &9072851800106685063
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -377,6 +344,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 8.29
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6070343770284085621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3852442965702252673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce4e494297c22134a9c9dcaeffe004a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GirarPlaneta
 --- !u!1 &4655212904273159226
 GameObject:
   m_ObjectHideFlags: 0

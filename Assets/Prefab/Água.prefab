@@ -13,8 +13,7 @@ GameObject:
   - component: {fileID: 7995741131387508623}
   - component: {fileID: 3908207232448657710}
   - component: {fileID: 3187322366374328233}
-  - component: {fileID: 5469467770890062894}
-  - component: {fileID: 8878095148404699087}
+  - component: {fileID: 3602791687739025423}
   m_Layer: 0
   m_Name: "\xC1gua"
   m_TagString: Untagged
@@ -129,7 +128,7 @@ MonoBehaviour:
   sun: {fileID: 0}
   orbitSpeed: 25
   rotationSpeed: 40
---- !u!114 &5469467770890062894
+--- !u!114 &3602791687739025423
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,26 +137,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4619991603690908262}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 392e5052a6708564583a78ab7c314476, type: 3}
+  m_Script: {fileID: 11500000, guid: ce4e494297c22134a9c9dcaeffe004a9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AtivarJogo
-  targetObject: {fileID: 0}
-  fase: 1
-  toggle: 0
-  fasePainelController: {fileID: 0}
---- !u!114 &8878095148404699087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4619991603690908262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37c86a63b45c5444c85d8402021026eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlanetHover
-  planetName: Water
-  verticalOffset: 1
-  labelObject: {fileID: 0}
-  labelText: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::GirarPlaneta

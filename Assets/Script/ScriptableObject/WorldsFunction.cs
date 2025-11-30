@@ -76,6 +76,9 @@ public class WorldsFunction : MonoBehaviour
         worldHabitantes = data.habitantes;
         defesaGain = data.defesa;
         curaGain = data.cura;
+
+        curaText.text = curaAcumulada.ToString();
+        defenseText.text = defesaAcumulada.ToString();
     }
 
   
@@ -104,7 +107,7 @@ public class WorldsFunction : MonoBehaviour
 
     void Update()
     {
-        if (worldHabitantes == 0)
+        if (worldHabitantes <= 0)
         {
             WinVirus();
         }
@@ -164,7 +167,10 @@ public class WorldsFunction : MonoBehaviour
     public void WinVirus()
     {
         SaveData save = SaveSystem.Load();
-        save.Pontos[planetaIndexAtual] = statsVirus.virusPontos;
+        if (statsVirus.virusPontos > save.Pontos[planetaIndexAtual])
+        {
+            save.Pontos[planetaIndexAtual] = statsVirus.virusPontos;
+        }
         SaveSystem.Save(save);
         SceneManager.LoadScene("Vitoria");
     }
