@@ -114,7 +114,6 @@ public class OsuMiniGame : MonoBehaviour
             attempts++;
             if (attempts > maxSpawnAttempts)
             {
-                Debug.LogWarning("Não encontrou espaço para spawnar círculo.");
                 break;
             }
 

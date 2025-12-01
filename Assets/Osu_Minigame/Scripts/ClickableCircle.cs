@@ -9,14 +9,13 @@ public class ClickableCircle : MonoBehaviour, IPointerClickHandler
     private OsuMiniGame gameManager;
     private bool isClicked = false;
 
-    private Image image; // UI Image
+    private Image image; 
 
     void Awake()
     {
         image = GetComponent<Image>();
         if (image == null)
         {
-            Debug.LogError("Circle prefab precisa ter um Image!");
         }
     }
 
@@ -60,7 +59,6 @@ public class ClickableCircle : MonoBehaviour, IPointerClickHandler
 
         float time = 0f;
 
-        // POP
         while (time < popDuration)
         {
             float t = time / popDuration;
@@ -75,7 +73,6 @@ public class ClickableCircle : MonoBehaviour, IPointerClickHandler
 
         time = 0f;
 
-        // SHRINK
         while (time < shrinkDuration)
         {
             float t = time / shrinkDuration;

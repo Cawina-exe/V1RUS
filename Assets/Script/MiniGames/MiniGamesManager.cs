@@ -45,13 +45,13 @@ public class MiniGamesManager : MonoBehaviour
         {
             timeRemaining -= Time.deltaTime;
 
-            if (timeRemaining <= 300f && !firstMiniGame)
+            if (timeRemaining <= 210f && !firstMiniGame)
             {
                 AtivarMiniGame();
                 firstMiniGame = true;
             }
 
-            if (timeRemaining <= 250f && !secondMiniGame)
+            if (timeRemaining <= 90f && !secondMiniGame)
             {
                 AtivarMiniGame();
                 secondMiniGame = true;

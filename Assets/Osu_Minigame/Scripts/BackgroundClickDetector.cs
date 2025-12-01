@@ -14,10 +14,8 @@ public class BackgroundClickDetector : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Background clicked");
         if (gameManager != null)
         {
-            Debug.Log("Notifying game manager of miss");
             gameManager.HandleMiss();
         }
     }

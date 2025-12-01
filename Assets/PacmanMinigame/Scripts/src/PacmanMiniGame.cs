@@ -47,7 +47,6 @@ namespace Pacman
             totalPellets = pellets.Length;
             eatenPellets = 0;
 
-            // Reset Screens
             if (winScreen != null) winScreen.SetActive(false);
             if (loseScreen != null) loseScreen.SetActive(false);
 
