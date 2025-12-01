@@ -49,7 +49,7 @@ public class ButtonBuy : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         
         if ((!utilizado || !bloquearAposCompra) && text != null)
         {
-            text.text = descricao + "\nPreço: " + preco.ToString("F2");
+            text.text = descricao + "\nCost: " + preco.ToString("F2");
         }
     }
 
