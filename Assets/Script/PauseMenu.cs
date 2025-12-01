@@ -5,6 +5,7 @@ public class PauseMenu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
     public GameObject pauseMenuUI; // Assign your PausePanel here
+    public GameObject optionsUI;
 
     void Update()
     {
@@ -36,15 +37,20 @@ public class PauseMenu : MonoBehaviour
         GameIsPaused = true;
     }
 
+     public void Options()
+    {
+        optionsUI.SetActive(true);
+        pauseMenuUI.SetActive(false);
+    }
+    public void OutOfOptions()
+    {
+        optionsUI.SetActive(false);
+        pauseMenuUI.SetActive(true);
+    }
     public void LoadMenu()
     {
         Time.timeScale = 1f; // crucial: reset time before leaving scene
         SceneManager.LoadScene("MainMenu"); // Make sure your menu scene is named exactly this
-    }
-
-    public void QuitGame()
-    {
-        Debug.Log("Quitting Game..."); // Just for testing in Editor
-        Application.Quit();
+        
     }
 }

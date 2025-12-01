@@ -66,20 +66,23 @@ public class MainMenu : MonoBehaviour
         mainMenuUI.SetActive(true);
     }
 
-    public void SetVolumeMusic(float volume)
+    public void SetVolumeMusic()
     {
-        audioSourceMusic.volume = volume;
 
-        currentData.som = volume;
+        
+        audioSourceMusic.volume = volumeSliderMusic.value ;
+
+        currentData.som = volumeSliderMusic.value;
 
         SaveSystem.Save(currentData);
+        
     }
 
-    public void SetVolumeSFX(float volume)
+    public void SetVolumeSFX()
     {
-        audioSourceSFX.volume = volume;
+        audioSourceSFX.volume = volumeSliderSFX.value;
 
-        currentData.sfx = volume;
+        currentData.sfx = volumeSliderSFX.value;
 
         SaveSystem.Save(currentData);
     }
@@ -107,11 +110,13 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         SceneManager.LoadScene(1);
+        audioSourceMusic.Pause();
     }
 
     public void GoToMainMenuScene()
     {
         SceneManager.LoadScene(0);
+        audioSourceMusic.UnPause();
     }
 
     public void QuitGame()
