@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,28 +10,32 @@ public class WorldsFunction : MonoBehaviour
     [SerializeField] private WorldData data;
     public WorldData Data { get { return data; } }
 
-    [Header("Visual Settings")] 
-  
+    [Header("Visual Settings")]
     [SerializeField] private List<GameObject> planetPrefabs;
-
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private GameObject currentPlanetInstance; 
+    [SerializeField] private GameObject currentPlanetInstance;
 
     [Header("UI & Stats")]
     [SerializeField] private TMP_Text defenseText;
     [SerializeField] private TMP_Text curaText;
     [SerializeField] private Virus statsVirus;
 
+    [Header("Main Scene Management")]
+    [Tooltip("Assign the PARENT object of your Main UI Canvas here.")]
+    [SerializeField] private GameObject mainUIContainer;
+    [SerializeField] private AudioSource mainMusic;
+    [SerializeField] private Camera mainCamera;
+
+    // Timers
     private float timer5sec = 0f;
     private float timer10sec = 0f;
     private float timer1min = 0f;
 
+    // Stats
     public float defesaAcumulada = 0;
     public float defesaGain = 0;
-
     public float curaAcumulada = 0f;
     public float curaGain = 0f;
-
     public float worldHabitantes;
 
     public bool statsCura = false;
@@ -42,101 +45,76 @@ public class WorldsFunction : MonoBehaviour
 
     void Start()
     {
-        SaveData save = SaveSystem.Load();
+       
+        if (mainCamera == null) mainCamera = Camera.main;
 
+
+        SaveData save = SaveSystem.Load();
         int planetaIndex = -1;
 
- 
-        for (int i = 0; i < save.PlanetaAtivado.Count; i++)
+        if (save != null)
         {
-            if (save.PlanetaAtivado[i])
+            for (int i = 0; i < save.PlanetaAtivado.Count; i++)
             {
-                planetaIndex = i;
-                break;
+                if (save.PlanetaAtivado[i])
+                {
+                    planetaIndex = i;
+                    break;
+                }
             }
         }
 
-  
-        if (planetaIndex == -1)
-            planetaIndex = 0;
+        if (planetaIndex == -1) planetaIndex = 0;
 
-   
+       
         if (planetaIndex >= dataPossiveis.Count)
         {
             Debug.LogError("Error: Index is larger than Data list!");
             return;
         }
 
+      
         planetaIndexAtual = planetaIndex;
         data = dataPossiveis[planetaIndex];
 
-        
         SpawnPlanet(planetaIndex);
-      
 
         worldHabitantes = data.habitantes;
         defesaGain = data.defesa;
         curaGain = data.cura;
 
-        curaText.text = curaAcumulada.ToString();
-        defenseText.text = defesaAcumulada.ToString();
-    }
-
-  
-    void SpawnPlanet(int index)
-    {
-    
-        if (index >= planetPrefabs.Count)
-        {
-            Debug.LogError("Error: You forgot to add the Prefab to the list in the Inspector!");
-            return;
-        }
-
-        if (currentPlanetInstance != null)
-        {
-            Destroy(currentPlanetInstance);
-        }
-
-
-        Vector3 pos = (spawnPoint != null) ? spawnPoint.position : Vector3.zero;
-        Quaternion rot = (spawnPoint != null) ? spawnPoint.rotation : Quaternion.identity;
-
-        currentPlanetInstance = Instantiate(planetPrefabs[index], pos, rot);
-
-     
+       
+        UpdateStatUI();
     }
 
     void Update()
     {
-        if (worldHabitantes <= 0)
-        {
-            WinVirus();
-        }
+        if (worldHabitantes <= 0) WinVirus();
 
         if (defesaAcumulada < 0)
         {
             statsDefesa = false;
-            defenseText.text = "0";
+            defesaAcumulada = 0;
+            if (defenseText) defenseText.text = "0";
         }
 
         if (curaAcumulada < 0)
         {
             statsCura = false;
-            curaText.text = "0";
+            curaAcumulada = 0;
+            if (curaText) curaText.text = "0";
         }
-        
-        
-        
+
         timer5sec += Time.deltaTime;
         timer10sec += Time.deltaTime;
         timer1min += Time.deltaTime;
-        
+
         if (timer5sec >= 5f)
         {
             if (statsCura)
             {
                 curaAcumulada += curaGain;
-                curaText.text = curaAcumulada.ToString();
+                if (curaText) curaText.text = curaAcumulada.ToString();
             }
             timer5sec = 0f;
         }
@@ -146,7 +124,7 @@ public class WorldsFunction : MonoBehaviour
             if (statsDefesa)
             {
                 defesaAcumulada += defesaGain;
-                defenseText.text = defesaAcumulada.ToString();
+                if (defenseText) defenseText.text = defesaAcumulada.ToString();
             }
             timer10sec = 0f;
         }
@@ -156,31 +134,104 @@ public class WorldsFunction : MonoBehaviour
             if (statsCura)
             {
                 curaAcumulada *= 2f;
-                curaText.text = curaAcumulada.ToString();
+                if (curaText) curaText.text = curaAcumulada.ToString();
             }
             if (statsDefesa)
             {
                 defesaAcumulada *= 2f;
-                defenseText.text = defesaAcumulada.ToString();
+                if (defenseText) defenseText.text = defesaAcumulada.ToString();
             }
             timer1min = 0f;
         }
     }
 
+    void SpawnPlanet(int index)
+    {
+        if (index >= planetPrefabs.Count) return;
+        if (currentPlanetInstance != null) Destroy(currentPlanetInstance);
+
+        Vector3 pos = (spawnPoint != null) ? spawnPoint.position : Vector3.zero;
+        Quaternion rot = (spawnPoint != null) ? spawnPoint.rotation : Quaternion.identity;
+
+        currentPlanetInstance = Instantiate(planetPrefabs[index], pos, rot);
+    }
+
     public void WinVirus()
     {
         SaveData save = SaveSystem.Load();
-        if (statsVirus.virusPontos > save.Pontos[planetaIndexAtual])
+        if (statsVirus != null && save != null)
         {
-            save.Pontos[planetaIndexAtual] = statsVirus.virusPontos;
+            if (statsVirus.virusPontos > save.Pontos[planetaIndexAtual])
+            {
+                save.Pontos[planetaIndexAtual] = statsVirus.virusPontos;
+            }
+            SaveSystem.Save(save);
         }
-        SaveSystem.Save(save);
         SceneManager.LoadScene("Vitoria");
     }
 
+    
     public void change()
     {
-        curaText.text = curaAcumulada.ToString();
-        defenseText.text = defesaAcumulada.ToString();
+        UpdateStatUI();
+    }
+
+    private void UpdateStatUI()
+    {
+        if (curaText) curaText.text = curaAcumulada.ToString();
+        if (defenseText) defenseText.text = defesaAcumulada.ToString();
+    }
+
+    public void ToggleMainScene(bool isActive)
+    {
+   
+        if (mainUIContainer != null)
+            mainUIContainer.SetActive(isActive);
+        else
+            Debug.LogWarning("Main UI Container is not assigned in WorldsFunction! UI will overlap.");
+
+    
+        if (mainCamera != null) mainCamera.enabled = isActive;
+
+ 
+        if (mainMusic != null)
+        {
+            if (isActive && !mainMusic.isPlaying) mainMusic.Play();
+            else if (!isActive && mainMusic.isPlaying) mainMusic.Pause();
+        }
+    }
+
+    public void ApplyPacmanWin()
+    {
+        Debug.Log("Pacman Won! Rewards Applied.");
+
+        if (statsVirus != null)
+        {
+            float bonus = statsVirus.virusPontos * 0.5f;
+            statsVirus.virusPontos += bonus;
+            if (statsVirus.VirusPontosText != null)
+                statsVirus.VirusPontosText.text = statsVirus.virusPontos.ToString();
+        }
+
+        if (statsCura)
+        {
+            curaAcumulada -= 20f;
+            if (curaAcumulada < 0) curaAcumulada = 0;
+            if (curaText != null) curaText.text = curaAcumulada.ToString();
+        }
+
+        ToggleMainScene(true);
+    }
+
+    public void ApplyPacmanLoss()
+    {
+        Debug.Log("Pacman Lost! Penalty Applied.");
+
+        statsCura = true;
+        curaAcumulada += 15f;
+
+        if (curaText != null) curaText.text = curaAcumulada.ToString();
+
+        ToggleMainScene(true);
     }
 }

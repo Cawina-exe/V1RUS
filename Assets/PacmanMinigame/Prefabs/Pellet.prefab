@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7085820686183784534}
   - component: {fileID: 5258049817561428825}
   - component: {fileID: 3329308546466241083}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pellet
   m_TagString: Pellet
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 926368434449727579}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 6f9acd9cf32a1f545ba7815c58346a10, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

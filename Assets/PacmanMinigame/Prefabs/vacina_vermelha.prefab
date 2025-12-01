@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.11831034, y: 0.61485916, z: 0.7584169, w: 0.18098266}
   m_LocalPosition: {x: -0.99582547, y: 1.2355382, z: -0.03937435}
-  m_LocalScale: {x: 29.85, y: 29.85, z: 66.152466}
+  m_LocalScale: {x: 29.849997, y: 29.849998, z: 66.152466}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -139,10 +139,10 @@ MonoBehaviour:
   tileSize: 2
   wallLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 256
   virusLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1024
   currentAction: WAIT
   gridPos: {x: 0, y: 0}
 --- !u!135 &9008602549229350039

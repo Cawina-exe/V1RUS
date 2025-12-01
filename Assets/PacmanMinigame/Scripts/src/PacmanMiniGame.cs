@@ -1,6 +1,6 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
 
 namespace Pacman
 {
@@ -14,44 +14,45 @@ namespace Pacman
         public bool isGameOver = false;
         public bool isVictory = false;
 
-        [Header("UI References")]
+        [Header("UI References (Optional)")]
+        [Tooltip("Leave empty if you want the game to close immediately on finish.")]
         public TMP_Text scoreText;
         public GameObject winScreen;
         public GameObject loseScreen;
 
-        [Header("Audio")]
+        [Header("Audio (Optional)")]
         public AudioSource musicSource;
         public AudioSource sfxSource;
-
         public AudioClip pelletClip;
         public AudioClip winClip;
         public AudioClip loseClip;
 
+      
+        private WorldsFunction _mainGame;
+
         private void Awake()
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
+            if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
         }
 
-   
         void Start()
         {
+          
+            _mainGame = FindFirstObjectByType<WorldsFunction>();
+            if (_mainGame == null) Debug.LogError("Pacman: Could not find 'WorldsFunction' in the scene!");
+
+          
             if (sfxSource == null) sfxSource = gameObject.AddComponent<AudioSource>();
 
-    
+           
             GameObject[] pellets = GameObject.FindGameObjectsWithTag("Pellet");
             totalPellets = pellets.Length;
             eatenPellets = 0;
 
             if (winScreen != null) winScreen.SetActive(false);
             if (loseScreen != null) loseScreen.SetActive(false);
-
             UpdateScoreUI();
-            Debug.Log($"Pacman Game Started! Pellets to eat: {totalPellets}");
         }
 
         public void PelletEaten(int pointValue)
@@ -61,10 +62,7 @@ namespace Pacman
             eatenPellets++;
             UpdateScoreUI();
 
-            if (sfxSource != null && pelletClip != null)
-            {
-                sfxSource.PlayOneShot(pelletClip);
-            }
+            if (sfxSource && pelletClip) sfxSource.PlayOneShot(pelletClip);
 
             if (eatenPellets >= totalPellets)
             {
@@ -75,49 +73,71 @@ namespace Pacman
         public void HandleDeath()
         {
             if (isVictory) return;
-
-            Debug.Log("GAME OVER!");
             isGameOver = true;
 
-            if (musicSource != null) musicSource.Stop();
-            if (sfxSource != null && loseClip != null) sfxSource.PlayOneShot(loseClip);
+          
+            if (musicSource) musicSource.Stop();
+            if (sfxSource && loseClip) sfxSource.PlayOneShot(loseClip);
+            if (loseScreen) loseScreen.SetActive(true);
 
-            if (loseScreen != null) loseScreen.SetActive(true);
-
-      
-            Invoke("CloseMiniGame", 3f);
+         
+            Invoke("FinalizeLoss", 3f);
         }
 
         private void WinGame()
         {
-            Debug.Log("VICTORY!");
             isVictory = true;
 
-            if (musicSource != null) musicSource.Stop();
-            if (sfxSource != null && winClip != null) sfxSource.PlayOneShot(winClip);
+         
+            if (musicSource) musicSource.Stop();
+            if (sfxSource && winClip) sfxSource.PlayOneShot(winClip);
+            if (winScreen) winScreen.SetActive(true);
 
-            if (winScreen != null) winScreen.SetActive(true);
+          
+            Invoke("FinalizeWin", 3f);
+        }
 
-            Virus pontos = GameObject.Find("EventSystem").GetComponent<Virus>();
-            pontos.virusPontos += pontos.virusPontos * 0.5f;
-            pontos.VirusPontosText.text = pontos.virusPontos.ToString();
+        private void FinalizeWin()
+        {
+            
+            if (_mainGame != null) _mainGame.ApplyPacmanWin();
 
-            Invoke("CloseMiniGame", 3f);
+          
+            Destroy(gameObject);
+            Destroy(transform.root.gameObject);
+        }
+
+        private void FinalizeLoss()
+        {
+            if (_mainGame != null) _mainGame.ApplyPacmanLoss();
+
+           
+            Debug.Log("Destroying Pacman Minigame..."); 
+            Destroy(gameObject);
+            Destroy(transform.root.gameObject);
         }
 
        
-        private void CloseMiniGame()
+
+        private IEnumerator CloseRoutine(float delay)
         {
            
-            SceneManager.UnloadSceneAsync(gameObject.scene);
+            yield return new WaitForSecondsRealtime(delay);
+
+          
+            if (_mainGame != null)
+            {
+                if (isVictory) _mainGame.ApplyPacmanWin();
+                else _mainGame.ApplyPacmanLoss();
+            }
+
+            Debug.Log("Pacman: Closing minigame.");
+            Destroy(gameObject);
         }
 
         private void UpdateScoreUI()
         {
-            if (scoreText != null)
-            {
-                scoreText.text = $"Pellets: {eatenPellets}/{totalPellets}";
-            }
+            if (scoreText != null) scoreText.text = $"Pellets: {eatenPellets}/{totalPellets}";
         }
     }
 }

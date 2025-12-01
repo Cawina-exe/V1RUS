@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+
 
 public class MiniGamesManager : MonoBehaviour
 {
@@ -7,9 +7,8 @@ public class MiniGamesManager : MonoBehaviour
     [SerializeField] private GameObject miniGameOsu;
     [SerializeField] private OsuMiniGame osuLogic;
 
-    [Header("Scene Names")]
-
-    public string pacmanSceneName = "Pacman_Minigame";
+    [Header("Minigame Prefabs")]
+    public GameObject pacmanPrefab; 
 
     private float timeRemaining = 300f;
     private bool firstMiniGame = false;
@@ -21,18 +20,24 @@ public class MiniGamesManager : MonoBehaviour
 
     void Start()
     {
-        MiniGameOsu.SetActive(false);
-        miniGamePopUp = GameObject.Find("EventSystem").GetComponent<MiniGamePopUp>();
+        if (MiniGameOsu != null) MiniGameOsu.SetActive(false);
+
+        
+        GameObject eventSys = GameObject.Find("EventSystem");
+        if (eventSys != null) miniGamePopUp = eventSys.GetComponent<MiniGamePopUp>();
 
         SaveData data = SaveSystem.Load();
         currentMiniGameIndex = -1;
 
-        for (int i = 0; i < data.PlanetaAtivado.Count; i++)
+        if (data != null && data.PlanetaAtivado != null)
         {
-            if (data.PlanetaAtivado[i])
+            for (int i = 0; i < data.PlanetaAtivado.Count; i++)
             {
-                currentMiniGameIndex = i;
-                break;
+                if (data.PlanetaAtivado[i])
+                {
+                    currentMiniGameIndex = i;
+                    break;
+                }
             }
         }
 
@@ -63,16 +68,30 @@ public class MiniGamesManager : MonoBehaviour
     {
         if (currentMiniGameIndex == 0)
         {
-            SceneManager.LoadScene(pacmanSceneName, LoadSceneMode.Additive);
+           
+            WorldsFunction worldFunc = FindFirstObjectByType<WorldsFunction>();
+            if (worldFunc != null) worldFunc.ToggleMainScene(false);
+
+            
+            if (pacmanPrefab != null)
+            {
+                
+                Vector3 safeSpawnPos = new Vector3(0, -1000, 0);
+                Instantiate(pacmanPrefab, safeSpawnPos, Quaternion.identity);
+            }
         }
+
         else if (currentMiniGameIndex == 1)
         {
-            MiniGameOsu.SetActive(true);
-            if(MiniGameOsu != null) osuLogic.StartGame();
+            if (MiniGameOsu != null)
+            {
+                MiniGameOsu.SetActive(true);
+                if (osuLogic != null) osuLogic.StartGame();
+            }
         }
         else if (currentMiniGameIndex == 2)
         {
-            if (miniGamePopUp != null) miniGamePopUp.StartGame();   
+            if (miniGamePopUp != null) miniGamePopUp.StartGame();
         }
     }
 }
