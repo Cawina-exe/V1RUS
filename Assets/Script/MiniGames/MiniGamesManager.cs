@@ -4,10 +4,11 @@ using UnityEngine.SceneManagement;
 public class MiniGamesManager : MonoBehaviour
 {
     private MiniGamePopUp miniGamePopUp;
+    [SerializeField] private GameObject miniGameOsu;
+    [SerializeField] private OsuMiniGame osuLogic;
 
     [Header("Scene Names")]
-   
-    public string osuSceneName = "Osu_Minigame";
+
     public string pacmanSceneName = "Pacman_Minigame";
 
     private float timeRemaining = 300f;
@@ -16,9 +17,11 @@ public class MiniGamesManager : MonoBehaviour
 
     private int currentMiniGameIndex;
 
+    public GameObject MiniGameOsu { get => miniGameOsu; set => miniGameOsu = value; }
+
     void Start()
     {
-       
+        MiniGameOsu.SetActive(false);
         miniGamePopUp = GameObject.Find("EventSystem").GetComponent<MiniGamePopUp>();
 
         SaveData data = SaveSystem.Load();
@@ -42,7 +45,7 @@ public class MiniGamesManager : MonoBehaviour
         {
             timeRemaining -= Time.deltaTime;
 
-            if (timeRemaining <= 210f && !firstMiniGame)
+            if (timeRemaining <= 300f && !firstMiniGame)
             {
                 AtivarMiniGame();
                 firstMiniGame = true;
@@ -64,7 +67,8 @@ public class MiniGamesManager : MonoBehaviour
         }
         else if (currentMiniGameIndex == 1)
         {
-            SceneManager.LoadScene(osuSceneName, LoadSceneMode.Additive);
+            MiniGameOsu.SetActive(true);
+            if(MiniGameOsu != null) osuLogic.StartGame();
         }
         else if (currentMiniGameIndex == 2)
         {

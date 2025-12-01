@@ -65,7 +65,7 @@ Material:
     - _QueueOffset: 0
     - _Texture1_Speed: 0.1
     - _Texture2_Speed: 0.1
-    - _VirusPercentage: -79.10757
+    - _VirusPercentage: 0.00016202625
     m_Colors:
     - _Binary_Color: {r: 0.43867916, g: 1, b: 0.44183517, a: 1}
     - _Texture1_Color: {r: 0.15881987, g: 0.4056604, b: 0.1692492, a: 1}

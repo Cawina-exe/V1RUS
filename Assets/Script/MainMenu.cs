@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject faseUI;
     [SerializeField] private GameObject optionsUI;
     [SerializeField] private GameObject creditsUI;
+    [SerializeField] private GameObject solarSystem;
 
     [Header("UI Elements")]
     [SerializeField] private Slider volumeSlider;
@@ -33,6 +34,7 @@ public class MainMenu : MonoBehaviour
         if (optionsUI != null) optionsUI.SetActive(false);
         if (faseUI != null) faseUI.SetActive(false);
         if (creditsUI != null) creditsUI.SetActive(false);
+        if(solarSystem != null) solarSystem.SetActive(false);
     }
 
     public void OpenCredits()
@@ -55,7 +57,6 @@ public class MainMenu : MonoBehaviour
 
     public void CloseOptions()
     {
-       
         SaveSystem.Save(currentData);
 
         optionsUI.SetActive(false);
@@ -81,11 +82,13 @@ public class MainMenu : MonoBehaviour
         optionsUI.SetActive(false);
         creditsUI.SetActive(false);
         mainMenuUI.SetActive(true);
+        solarSystem.SetActive(false);
     }
 
     public void CloseMainMenu()
     {
         mainMenuUI.SetActive(false);
+        solarSystem.SetActive(true);
     }
 
     public void closeFase()

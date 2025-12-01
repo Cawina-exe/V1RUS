@@ -39,6 +39,9 @@ public class OsuMiniGame : MonoBehaviour
     private bool gameIsActive = false;
 
 
+    [SerializeField] MiniGamesManager miniGamesManager;
+
+
  
     void Start()
     {
@@ -64,7 +67,7 @@ public class OsuMiniGame : MonoBehaviour
         UpdateUI();
     }
 
-    void StartGame()
+    public void StartGame()
     {
         gameIsActive = true;
         currentTargetNumber = 1;
@@ -92,36 +95,43 @@ public class OsuMiniGame : MonoBehaviour
         }
     }
 
+    [SerializeField] private RectTransform localToSpawn;
+
     void SpawnNextCircle()
     {
         if (!gameIsActive) return;
 
         int maxSpawnAttempts = 20;
         int currentSpawnAttempts = 0;
-        Vector2 spawnPos = Vector2.zero;
+        Vector3 spawnPos = Vector3.zero;
         bool spotIsClear = false;
+
+        Rect rect = localToSpawn.rect;
 
         do
         {
-            float randomX = Random.Range(-7f, 7f);
-            float randomY = Random.Range(-4f, 4f);
-            spawnPos = new Vector2(randomX, randomY);
+            // posição LOCAL dentro do rect
+            float randomX = Random.Range(rect.xMin, rect.xMax);
+            float randomY = Random.Range(rect.yMin, rect.yMax);
+
+            // converter posição local -> posição mundial
+            Vector2 localPos = new Vector2(randomX, randomY);
+            spawnPos = localToSpawn.TransformPoint(localPos);
 
             currentSpawnAttempts++;
             if (currentSpawnAttempts > maxSpawnAttempts)
             {
-                Debug.LogError("Could not find a clear spot to spawn circle " + currentTargetNumber);
+                Debug.LogError("Não encontrou espaço para spawnar círculo " + currentTargetNumber);
                 break;
             }
 
-            spotIsClear = (Physics2D.OverlapCircle(spawnPos, circleRadius, circlesLayerMask) == null);
+            spotIsClear = Physics2D.OverlapCircle(spawnPos, circleRadius, circlesLayerMask) == null;
 
         } while (!spotIsClear);
 
         if (spotIsClear)
         {
             GameObject circleGO = Instantiate(circlePrefab, spawnPos, Quaternion.identity);
-         
             circleGO.GetComponent<ClickableCircle>().Initialize(this, currentTargetNumber);
         }
     }
@@ -221,7 +231,7 @@ public class OsuMiniGame : MonoBehaviour
     private void CloseMiniGame()
     {
       
-        SceneManager.UnloadSceneAsync(gameObject.scene);
+        miniGamesManager.MiniGameOsu.SetActive(false);
     }
 
     void UpdateUI()
