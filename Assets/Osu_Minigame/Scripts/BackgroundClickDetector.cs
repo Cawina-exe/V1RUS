@@ -1,19 +1,24 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class BackgroundClickDetector : MonoBehaviour
+public class BackgroundClickDetector : MonoBehaviour, IPointerClickHandler
 {
+    [SerializeField] private GameObject background;
+
     private OsuMiniGame gameManager;
 
     void Start()
     {
-       
         gameManager = FindObjectOfType<OsuMiniGame>();
     }
 
- 
-    private void OnMouseDown()
+    public void OnPointerClick(PointerEventData eventData)
     {
-        
-        gameManager.HandleMiss();
+        Debug.Log("Background clicked");
+        if (gameManager != null)
+        {
+            Debug.Log("Notifying game manager of miss");
+            gameManager.HandleMiss();
+        }
     }
 }

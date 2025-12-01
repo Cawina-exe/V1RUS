@@ -51,7 +51,7 @@ public class MiniGamesManager : MonoBehaviour
                 firstMiniGame = true;
             }
 
-            if (timeRemaining <= 90f && !secondMiniGame)
+            if (timeRemaining <= 250f && !secondMiniGame)
             {
                 AtivarMiniGame();
                 secondMiniGame = true;

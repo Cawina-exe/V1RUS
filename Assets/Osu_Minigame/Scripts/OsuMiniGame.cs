@@ -12,6 +12,7 @@ public class OsuMiniGame : MonoBehaviour
     public TextMeshProUGUI failText;
     public GameObject winScreen;
     public GameObject lossScreen;
+    public GameObject MiniGameOsu;
 
     [Header("Audio Settings")]
     public AudioSource musicSource;
@@ -37,11 +38,6 @@ public class OsuMiniGame : MonoBehaviour
     private int currentFails;
     private float currentTime;
     private bool gameIsActive = false;
-
-
-    [SerializeField] MiniGamesManager miniGamesManager;
-
-
  
     void Start()
     {
@@ -49,7 +45,6 @@ public class OsuMiniGame : MonoBehaviour
         {
             circlesLayerMask = LayerMask.GetMask("Circles");
         }
-        StartGame();
     }
 
     void Update()
@@ -101,8 +96,8 @@ public class OsuMiniGame : MonoBehaviour
     {
         if (!gameIsActive) return;
 
-        int maxSpawnAttempts = 20;
-        int currentSpawnAttempts = 0;
+        int maxSpawnAttempts = 30;
+        int attempts = 0;
         Vector3 spawnPos = Vector3.zero;
         bool spotIsClear = false;
 
@@ -110,29 +105,38 @@ public class OsuMiniGame : MonoBehaviour
 
         do
         {
-            // posição LOCAL dentro do rect
-            float randomX = Random.Range(rect.xMin, rect.xMax);
-            float randomY = Random.Range(rect.yMin, rect.yMax);
+            float x = Random.Range(rect.xMin, rect.xMax);
+            float y = Random.Range(rect.yMin, rect.yMax);
 
-            // converter posição local -> posição mundial
-            Vector2 localPos = new Vector2(randomX, randomY);
+            Vector2 localPos = new Vector2(x, y);
             spawnPos = localToSpawn.TransformPoint(localPos);
 
-            currentSpawnAttempts++;
-            if (currentSpawnAttempts > maxSpawnAttempts)
+            attempts++;
+            if (attempts > maxSpawnAttempts)
             {
-                Debug.LogError("Não encontrou espaço para spawnar círculo " + currentTargetNumber);
+                Debug.LogWarning("Não encontrou espaço para spawnar círculo.");
                 break;
             }
 
-            spotIsClear = Physics2D.OverlapCircle(spawnPos, circleRadius, circlesLayerMask) == null;
+            spotIsClear = CheckIfPositionIsFree(spawnPos);
 
         } while (!spotIsClear);
 
-        if (spotIsClear)
+        GameObject circleGO = Instantiate(circlePrefab, spawnPos, Quaternion.identity, localToSpawn);
+        circleGO.GetComponent<ClickableCircle>().Initialize(this, currentTargetNumber);
+
+        bool CheckIfPositionIsFree(Vector3 worldPos)
         {
-            GameObject circleGO = Instantiate(circlePrefab, spawnPos, Quaternion.identity);
-            circleGO.GetComponent<ClickableCircle>().Initialize(this, currentTargetNumber);
+            foreach (Transform child in localToSpawn)
+            {
+                float minDist = circleRadius * 100f;
+                float dist = Vector3.Distance(child.position, worldPos);
+
+                if (dist < minDist)
+                    return false;
+            }
+
+            return true;
         }
     }
 
@@ -228,10 +232,10 @@ public class OsuMiniGame : MonoBehaviour
     }
 
   
-    private void CloseMiniGame()
+    public void CloseMiniGame()
     {
       
-        miniGamesManager.MiniGameOsu.SetActive(false);
+        MiniGameOsu.SetActive(false);
     }
 
     void UpdateUI()

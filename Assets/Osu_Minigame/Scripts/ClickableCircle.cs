@@ -1,23 +1,22 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class ClickableCircle : MonoBehaviour
+public class ClickableCircle : MonoBehaviour, IPointerClickHandler
 {
-    public int circleNumber; 
+    public int circleNumber;
     private OsuMiniGame gameManager;
     private bool isClicked = false;
 
-    
-    private SpriteRenderer spriteRenderer;
+    private Image image; // UI Image
 
-   
     void Awake()
     {
-       
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer == null)
+        image = GetComponent<Image>();
+        if (image == null)
         {
-            Debug.LogError("Circle prefab is missing a SpriteRenderer!");
+            Debug.LogError("Circle prefab precisa ter um Image!");
         }
     }
 
@@ -27,78 +26,65 @@ public class ClickableCircle : MonoBehaviour
         circleNumber = number;
     }
 
-    private void OnMouseDown()
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (isClicked) return;
         isClicked = true;
-        
+
         gameManager.CircleClicked(circleNumber);
         StartCoroutine(PopAndShrinkAnimation());
     }
-    
+
     private IEnumerator PopAndShrinkAnimation()
     {
-     
-        float popDuration = 0.1f;    
-        float shrinkDuration = 0.2f; 
+        float popDuration = 0.1f;
+        float shrinkDuration = 0.2f;
         float popScaleMultiplier = 1.3f;
-        
-       
-        float darkenAmount = 0.7f; 
 
-        
+        float darkenAmount = 0.7f;
+
         Vector3 startScale = transform.localScale;
         Vector3 popScale = startScale * popScaleMultiplier;
         Vector3 endScale = Vector3.zero;
-        
-       
-        Color startColor = spriteRenderer.color; 
-        
-        
-        Color popColor = new Color(startColor.r * darkenAmount, 
-                                 startColor.g * darkenAmount, 
-                                 startColor.b * darkenAmount, 
-                                 startColor.a);
-                                 
-     
-        Color endColor_Color = new Color(popColor.r, popColor.g, popColor.b, 0f);
 
+        Color startColor = image.color;
 
-     
-        float timeElapsed = 0f;
-        while (timeElapsed < popDuration)
+        Color popColor = new Color(
+            startColor.r * darkenAmount,
+            startColor.g * darkenAmount,
+            startColor.b * darkenAmount,
+            startColor.a
+        );
+
+        Color endColor = new Color(popColor.r, popColor.g, popColor.b, 0f);
+
+        float time = 0f;
+
+        // POP
+        while (time < popDuration)
         {
-            float t = timeElapsed / popDuration; 
-            
+            float t = time / popDuration;
             transform.localScale = Vector3.Lerp(startScale, popScale, t);
-            
-            
-            spriteRenderer.color = Color.Lerp(startColor, popColor, t);
-            
-            timeElapsed += Time.deltaTime;
-            yield return null; 
+            image.color = Color.Lerp(startColor, popColor, t);
+            time += Time.deltaTime;
+            yield return null;
         }
-        
-       
+
         transform.localScale = popScale;
-        spriteRenderer.color = popColor; 
+        image.color = popColor;
 
-       
-        timeElapsed = 0f; 
-        while (timeElapsed < shrinkDuration)
+        time = 0f;
+
+        // SHRINK
+        while (time < shrinkDuration)
         {
-            float t = timeElapsed / shrinkDuration;
-            
+            float t = time / shrinkDuration;
             transform.localScale = Vector3.Lerp(popScale, endScale, t);
-            
-            
-            spriteRenderer.color = Color.Lerp(popColor, endColor_Color, t);
-            
-            timeElapsed += Time.deltaTime;
-            yield return null; 
+            image.color = Color.Lerp(popColor, endColor, t);
+            time += Time.deltaTime;
+            yield return null;
         }
 
-        
         Destroy(gameObject);
     }
 }
