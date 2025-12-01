@@ -44,7 +44,7 @@ public class Virus : MonoBehaviour
         {
             virusPower += virusGain;
             virusPontos += Mathf.Ceil(virusGain * 0.25f);
-            virusMoney += virusGain * 0.5f;
+            virusMoney += 1;
             VirusPontosText.text = virusPontos.ToString();
             VirusMoneyText.text = virusMoney.ToString() + "$";
             attack();

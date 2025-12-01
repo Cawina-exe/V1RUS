@@ -1000,7 +1000,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Planet Selection
+  m_text: Main Menu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 791c1284a93921340abbbdeb174add19, type: 2}
   m_sharedMaterial: {fileID: -6700656787491726243, guid: 791c1284a93921340abbbdeb174add19, type: 2}

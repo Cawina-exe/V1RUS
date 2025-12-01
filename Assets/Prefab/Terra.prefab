@@ -107,7 +107,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.49999997
   m_Center: {x: -0.00000023841858, y: -6.121136e-23, z: -0.00000011920929}
@@ -360,7 +360,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.49999997
   m_Center: {x: -0.00000023841858, y: -6.121136e-23, z: -0.00000011920929}

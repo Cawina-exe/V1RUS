@@ -10604,6 +10604,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: vacina_rosa
       objectReference: {fileID: 0}
+    - target: {fileID: 5614917070305156020, guid: ba20bc35543eb344ab05478aac85f2ce, type: 3}
+      propertyPath: wallLayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5614917070305156020, guid: ba20bc35543eb344ab05478aac85f2ce, type: 3}
+      propertyPath: virusLayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7114802084428058466, guid: ba20bc35543eb344ab05478aac85f2ce, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3
@@ -10742,6 +10750,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 456188632792587894, guid: 634c7626c80f6ae44898a432899c1eca, type: 3}
+      propertyPath: wallLayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 456188632792587894, guid: 634c7626c80f6ae44898a432899c1eca, type: 3}
+      propertyPath: virusLayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3866116127681735196, guid: 634c7626c80f6ae44898a432899c1eca, type: 3}
       propertyPath: m_Name
       value: vacina_laranja
@@ -11230,6 +11246,14 @@ PrefabInstance:
     - target: {fileID: 3362805867596117252, guid: 7ee4182b6a18ba043bb8e1f01a1f360c, type: 3}
       propertyPath: m_Name
       value: vacina_azul
+      objectReference: {fileID: 0}
+    - target: {fileID: 8863546220116456299, guid: 7ee4182b6a18ba043bb8e1f01a1f360c, type: 3}
+      propertyPath: wallLayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8863546220116456299, guid: 7ee4182b6a18ba043bb8e1f01a1f360c, type: 3}
+      propertyPath: virusLayer.m_Bits
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11730,6 +11754,14 @@ PrefabInstance:
     - target: {fileID: 3731104225450933379, guid: 9692f9b27f09c9b448955df99b2a3a91, type: 3}
       propertyPath: m_Name
       value: vacina_vermelha
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830684910316837058, guid: 9692f9b27f09c9b448955df99b2a3a91, type: 3}
+      propertyPath: wallLayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830684910316837058, guid: 9692f9b27f09c9b448955df99b2a3a91, type: 3}
+      propertyPath: virusLayer.m_Bits
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
