@@ -12,7 +12,10 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject solarSystem;
 
     [Header("UI Elements")]
-    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private Slider volumeSliderMusic;
+    [SerializeField] private Slider volumeSliderSFX;
+    [SerializeField] private AudioSource audioSourceMusic;
+    [SerializeField] private AudioSource audioSourceSFX;
 
     private SaveData currentData;
 
@@ -20,16 +23,16 @@ public class MainMenu : MonoBehaviour
     {
         currentData = SaveSystem.Load();
 
-  
-        AudioListener.volume = currentData.som;
-
-      
-        if (volumeSlider != null)
+        if (volumeSliderMusic != null)
         {
-            volumeSlider.value = currentData.som;
+            volumeSliderMusic.value = currentData.som;
         }
 
-       
+        if (volumeSliderSFX != null)
+        {
+            volumeSliderSFX.value = currentData.sfx;
+        }
+
         if (mainMenuUI != null) mainMenuUI.SetActive(true);
         if (optionsUI != null) optionsUI.SetActive(false);
         if (faseUI != null) faseUI.SetActive(false);
@@ -63,18 +66,23 @@ public class MainMenu : MonoBehaviour
         mainMenuUI.SetActive(true);
     }
 
-
-
-    public void SetVolume(float volume)
+    public void SetVolumeMusic(float volume)
     {
-        AudioListener.volume = volume;
+        audioSourceMusic.volume = volume;
 
         currentData.som = volume;
 
         SaveSystem.Save(currentData);
     }
 
+    public void SetVolumeSFX(float volume)
+    {
+        audioSourceSFX.volume = volume;
 
+        currentData.sfx = volume;
+
+        SaveSystem.Save(currentData);
+    }
 
     public void OpenMainMenu()
     {

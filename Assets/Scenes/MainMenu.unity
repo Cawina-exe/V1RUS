@@ -2329,7 +2329,10 @@ MonoBehaviour:
   optionsUI: {fileID: 482797784}
   creditsUI: {fileID: 1962783225}
   solarSystem: {fileID: 1998892267}
-  volumeSlider: {fileID: 1295947670}
+  volumeSliderMusic: {fileID: 0}
+  volumeSliderSFX: {fileID: 0}
+  audioSourceMusic: {fileID: 0}
+  audioSourceSFX: {fileID: 0}
 --- !u!114 &876739721
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SaveControllerMusic : MonoBehaviour
+public class SaveControllerSFX : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
     private SaveData currentData;
@@ -8,7 +8,7 @@ public class SaveControllerMusic : MonoBehaviour
     {
         currentData = SaveSystem.Load();
 
-        audioSource.volume = currentData.som;
+        audioSource.volume = currentData.sfx;
     }
 
 }

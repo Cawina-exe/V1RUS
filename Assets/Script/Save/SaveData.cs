@@ -11,14 +11,16 @@ public class SaveData
 
     
     public float som;
+    public float sfx;
 
-    
+
     public SaveData()
     {
         PlanetaAtivado = new List<bool> { false, false, false };
         Planetas = new List<string> { "Earth", "Aquatic", "Techno" };
         Pontos = new List<float> { 0f, 0f, 0f };
 
-        som = 1.0f; 
+        som = 0.5f;
+        sfx = 0.5f;
     }
 }
